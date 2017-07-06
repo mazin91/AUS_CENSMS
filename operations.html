@@ -1,0 +1,3544 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Operations page</title>
+		<!----------------------------------->
+		<script src="js/jquery.js"></script>
+		<script src="js/jquery-ui.js"></script>
+		<script src="js/md5.js"></script>
+		<script src="js/jspdf.debug.js"></script>	
+		<script src="js/html2canvas.js"></script>	
+		<!----------------------------------->	
+		<link href="css/jquery-ui.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/normalize_uploader.css"/>
+		<link rel="stylesheet" href="css/style_uploader.css"/>
+		<!---------------------------------->
+	</head>
+
+	<body>	
+		<img class="logo" src="images/logo.jpg">
+		<img class="aus" src="images/aus.jpg">
+		
+		<div id='cssmenu'>
+			<ul class="nav">
+				<li class="tab"><a class="active" href='#sw_operations'>Software Operations</a></li>
+				<li class="tab"><a href='#software'>Software</a></li>
+				<li class="tab"><a href='#fac_staff'>Fac/Staff Members</a></li>
+				<li class="tab"><a href='#vendor'>Vendors</a></li>
+				<li class="tab"><a href='#users' id='admin-tab'>Admin</a>
+					<ul>
+						<li><a href='#users' class="child-tab" id="users-tab"><span>Users</span></a></li>
+						<li><a href='#variables' class="child-tab"><span>Variables</span></a></li>
+						<li><a href='#Reports' class="child-tab"><span>Reports</span></a></li>
+					</ul>
+				</li>
+			</ul>
+		
+			<div class="tab-content">
+				<!----------------------------------------------------------->
+				<div id="sw_operations">   
+					<h2 class="title">Purchase/Renew Operations</h2>
+					<div id="page">
+						<a>Software Name:</a><br>
+						<input class="input_box" list="autocomplete_op" id="op_sw_name" placeholder="Text" autofocus autocomplete="off"/><a class="star">*</a><div class="content"><div class="help-tip"><p>Write the name of the software that needs to be purchased or renewed. This software must be registered in the software tab ahead. It could have any characters including spaces.</p></div></div>
+						<button class="sub_button" id="ret_op_button" onclick="search_purchase_op()" style="margin:-36px 0 0 515px; display: block;">Retrieve</button><br>
+						<datalist id="autocomplete_op">
+						</datalist>
+						<a>Request Number:</a><br>
+						<input class="input_box" type="text" name="R_num" id="R_num" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>The request number could include characters, e.x. R15QRS3-577.</p></div></div><br><br>
+						<a>Purchase Number:</a><br>
+						<input class="input_box" type="text" name="P_num" id="P_num" placeholder="Text" autofocus/><div class="content"class="content"><div class="help-tip"><p>The purchase number could include characters, e.x. PU689RH-389.</p></div></div><br><br>
+						<a>Amount:</a><br>
+						<input class="input_box" type="text" name="amount" id="amount" placeholder="Numbers" autofocus/><div class="content"><div class="help-tip"><p>Write down the amount as numbers only, e.x. 1000. It should be in AED.</p></div></div><br><br>
+						<!--a>Is it new?</a>
+						<select class="yes_no_options" name="new_sw" id="new_sw">
+							<option value="1" selected>New</option>
+							<option value="0">Old</option>
+						</select><br><br-->
+						<a>Order Date:</a><br>
+						<input class="input_box" id="order_date" placeholder="Click here"/><br><br>
+						<input type="checkbox" class="mail_radio_button" id="purch_email"><a class="mail_ch_box_txt" id="purch_email_txt">Send a "<b><i>Purchase</i></b>" mail to the "A. Dean & Assistant"?</a><div class="content" id="purch_email_tip" style="margin-top:25px;"><div class="help-tip"><p>The "Purchase" email can be sent using only the "Purchase" button.</p></div></div>
+						<input type="checkbox" class="mail_radio_button" id="renew_email"><a class="mail_ch_box_txt" id="renew_email_txt">Send a "<b><i>Renewal</i></b>" mail to the "A. Dean & Assistant"?</a> <div class="content" id="renew_email_tip" style="margin-top:25px;"><div class="help-tip"><p>The "Renewal" email can be sent using only the "Renew" button.</p></div></div>
+						<br><br>
+						<hr width="450px"><br><br>
+						<a>Is it received?</a>
+						<select class="yes_no_options" name="received" id="received" disabled="disabled">
+							<option value="1">Received</option>
+							<option value="0" selected>Not received</option>
+						</select><br><br>
+						<div id="deliv_info"></div>
+						<hr width="450px"><br><br>
+						<a>Comments:</a><br>
+						<textarea class="textarea_box" name="op_comments" id="op_comments" placeholder="Text"></textarea><br><br>
+						
+						<button class="sub_button" id="reg_op_button" onclick="purchase_op()" style="margin-left:0px;">Purchase</button>
+						<button class="sub_button" id="renew_op_button" onclick="renew_op()"  style="margin-left:0px;">Renew</button>
+						<button class="sub_button" id="upd_op_button" onclick="upd_purchase_op()">Update</button>
+						<button class="del_button" id="del_op_button" onclick="del_purchase_op()">Delete</button><br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="software">   
+					<h2 class="title">Software</h2>
+					<div id="page">
+						<a>Software Name:</a><br>
+						<input class="input_box" list="autocomplete_sw" id="sw_name" placeholder="Text" autofocus autocomplete="off"/><a class="star">*</a><div class="content"><div class="help-tip"><p>Write down the name of the software to be registered in the database. It could have any characters including spaces.</p></div></div>
+						<button class="sub_button" id="ret_sw_button" onclick="search_sw()" style="margin:-36px 0 0 515px; display: block;">Retrieve</button><br>
+						<datalist id="autocomplete_sw">
+						</datalist>
+						<a>Version:</a><br>
+						<input class="input_box" type="text" name="version" id="version" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>The version could have dots and dashes, e.x. 10.15-28.56</p></div></div><br><br>
+						<a>Products/Details:</a><br>
+						<textarea class="textarea_box" name="products" id="products" placeholder="Text"></textarea><br><br>
+						<a>License type:</a><br>
+						<select name="lic_type" id="lic_type" style="width: 200px;">
+							<option value="NET-LIC" selected>Network license</option>
+							<option value="SER-LIC">Server license</option>
+							<option value="SIN-LIC">Single license</option>
+						</select><br>
+						<a>License server & port:</a><br>
+						<input class="input_box" type="text" name="lic_server_port" id="lic_server_port" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>This field could have any characters, e.x. matlab.12-3/aus@2000</p></div></div><br><br>
+						<a>Number of licenses:</a><br>
+						<input class="input_box" type="text" name="num_lic" id="num_lic" placeholder="Number" autofocus/><div class="content"><div class="help-tip"><p>Write down a number only.</p></div></div><br><br>
+						<a>Requested by:</a><br>
+						<input class="input_box" type="text" name="fac_name" id="fac_name" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>The fac/staff member with whom the software is requested. This person must be registered in Fac/Staff tab ahead.</p></div></div><br><br>
+						<a>Vendor Name:</a><br>
+						<input class="input_box" type="text" name="vend_name" id="vend_name" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>The vendor name must be registered in vendor tab ahead.</p></div></div><br><br>
+						<a>Comments:</a><br>
+						<textarea class="textarea_box" name="sw_comments" id="sw_comments" placeholder="Text"></textarea><br><br><br>	
+						
+						<button class="sub_button" id="reg_sw_button" onclick="reg_sw()" style="margin-left:0px;">Register</button>
+						<button class="sub_button" id="upd_sw_button" onclick="update_sw()">Update</button>
+						<button class="del_button" id="del_sw_button" onclick="del_sw()">Delete</button>
+						
+						<!--------------------------------------------------------->
+						<form class="file-uploader">
+			
+							<div class="file-uploader__message-area"><p></p>
+							</div>
+							<div class="file-chooser"><br>
+								<input type="file" class="file-chooser__input" name="file_upload" id="file-chooser__input" multiple>
+							</div>
+						</form>
+						<!----------------------------------------------------------->
+					
+						<br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="fac_staff">   
+					<h2 class="title">Faculty/Staff Members</h2>
+					<div id="page">
+						<a>Name:</a><br>
+						<input class="input_box" list="autocomplete_fac" id="fac_staff_name" placeholder="Text" autofocus autocomplete="off"/><a class="star">*</a><div class="content"><div class="help-tip"><p>Write down the fac/staff member name. It could have any characters including spaces.</p></div></div>
+						<button class="sub_button" id="ret_fac_button" onclick="search_fac()" style="margin:-36px 0 0 515px; display: block;">Retrieve</button><br>
+						<datalist id="autocomplete_fac">
+						</datalist>
+						<a>Position:</a><br>
+						<input class="input_box" type="text" name="fac_pos" id="fac_pos" placeholder="Text" autofocus/><br><br>
+						<a>Type:</a><br>
+						<select name="fac_type" id="fac_type" style="width: 200px;">
+							<option value="FAC" selected>Faculty</option>
+							<option value="STAFF">Staff</option>
+							<option value="LAB-INS">Lab Instructor</option>
+						</select><br>
+						<a>Faculty:</a><br>
+						<select name="fac" id="fac" style="width: 270px;">
+							<option value="ENG" selected>Engineering</option>
+							<option value="ARCH-ART-DES">Architecture, Art and Design</option>
+							<option value="ART-SCI">Arts and Sciences</option>
+							<option value="SBA">School of Business Administration</option>
+						</select><br>
+						<a>Department:</a><br>
+						<select name="dept" id="dept" style="width: 480px;">		
+							<option value='CHE'>Department of Chemical Engineering</option>
+							<option value='CVE'>epartment of Civil Engineering</option>
+							<option value='CSE'>Department of Computer Science and Engineering</option>
+							<option value='ELE'>Department of Electrical Engineering</option>
+							<option value='ESM'>Department of Electrical Engineering</option>
+							<option value='MCE'>Department of Mechanical Engineering</option>
+						</select><br>
+						<a>Office:</a><br>
+						<input class="input_box" type="text" name="fac_office" id="fac_office" placeholder="Text" autofocus/><div class="content"><div class="help-tip"><p>It could have any characters including spaces.</p></div></div><br><br>
+						<a>Email:</a><br>
+						<input class="input_box" type="email" name="fac_email" id="fac_email" placeholder="Email" autofocus/><a class="star">*</a><div class="content"><div class="help-tip"><p>Enter a valid email.</p></div></div><br>
+						<a>Phone:</a><br>
+						<input class="input_box" type="text" name="fac_phone" id="fac_phone" placeholder="Phone" autofocus/><div class="content"><div class="help-tip"><p>Enter a valid phone number, starting by '+' followed by 12 digits, e.x +123456789123.</p></div></div><br><br>
+						<a>Mobile:</a><br>
+						<input class="input_box" type="text" name="fac_mobile" id="fac_mobile" placeholder="Mobile" autofocus/><div class="content"><div class="help-tip"><p>Enter a valid mobile number, starting by '+' followed by 12 digits, e.x +123456789123.</p></div></div><br><br>
+						<a>Comments:</a><br>
+						<textarea class="textarea_box" name="fac_comments" id="fac_comments" placeholder="Text"></textarea><br><br><br>
+						
+						<button class="sub_button" id="reg_fac_button" onclick="reg_fac()" style="margin-left:0px;">Register</button>
+						<button class="sub_button" id="upd_fac_button" onclick="update_fac()">Update</button>
+						<button class="del_button" id="del_fac_button" onclick="del_fac()">Delete</button><br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="vendor">   
+					<h2 class="title">Vendor</h2>
+					<div id="page">
+						<a>Vendor Name:</a><br>
+						<input class="input_box" list="autocomplete_vend" id="vendor_name" placeholder="Text" autofocus autocomplete="off"/><a class="star">*</a><div class="content"><div class="help-tip"><p>Write down the vendor name. It could any characters including spaces.</p></div></div>
+						<button class="sub_button" id="ret_vend_button" onclick="search_vend()" style="margin:-36px 0 0 515px; display: block;">Retrieve</button><br>
+						<datalist id="autocomplete_vend">
+						</datalist>
+						<a>Address:</a><br>
+						<textarea class="textarea_box" name="vend_address" id="vend_address" placeholder="Text"></textarea><br><br>
+						<a>Email:</a><br>
+						<input class="input_box" type="email" name="vend_email" id="vend_email" placeholder="Email" autofocus><a class="star">*</a><div class="content"><div class="help-tip"><p>Enter a valid email.</p></div></div><br>
+						<a>Phone:</a><br>
+						<input class="input_box" type="text" name="vend_phone" id="vend_phone" placeholder="Phone" autofocus><div class="content"><div class="help-tip"><p>Enter a valid phone number, starting by a '+' followed by 12 digits, e.x +123456789123.</p></div></div><br><br>
+						<a>Special contact:</a><br>
+						<textarea class="textarea_box" name="vend_sp_contact" id="vend_sp_contact" placeholder="Text"></textarea><br><br>
+						<a>Comments:</a><br>
+						<textarea class="textarea_box" name="vend_comments" id="vend_comments" placeholder="Text"></textarea><br><br><br>
+						
+						<button class="sub_button" id="reg_vend_button" onclick="reg_vend()" style="margin-left:0px;">Register</button>
+						<button class="sub_button" id="upd_vend_button" onclick="update_vend()">Update</button>
+						<button class="del_button" id="del_vend_button" onclick="del_vend()">Delete</button><br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="users">   
+					<h2 class="title">Users</h2>
+					<div id="page">
+						<a>Full Name:</a><br>
+						<input class="input_box" list="autocomplete_user" id="user_fname" placeholder="Text" autofocus/><a class="star">*</a><div class="content"><div class="help-tip"><p>The name could have any characters including spaces.</p></div></div>
+						<button class="sub_button" id="ret_user_button" onclick="search_user()" style="margin:-36px 0 0 515px; display: block;">Retrieve</button>
+						<input type="checkbox" name="is_fac" id="is_fac"/><a id="check_box_text">This is a Faculty/Staff member?</a><br>
+						<datalist id="autocomplete_user">
+						</datalist>
+						<a>Username:</a><br>
+						<input class="input_box" type="text" name="user_name" id="user_name" placeholder="Text" autofocus/><a class="star">*</a><div class="content"><div class="help-tip"><p>The username must be identical to the AUS username.</p></div></div><br>
+						<a>Password:</a><br>
+						<input class="input_box" type="password" name="user_pass1" id="user_pass1" placeholder="Text" autofocus/><a class="star">*</a><br>
+						<a>Confirm Password:</a><br>
+						<input class="input_box" type="password" name="user_pass2" id="user_pass2" placeholder="Text" autofocus/><a class="star">*</a><br>
+						<a>Privilege:</a><br>
+						<select name="user_priv" id="user_priv">
+							<option value="1">Admin</option>
+							<option value="2">Super User</option>
+							<option value="3" selected>User</option>
+						</select><br>
+						
+						<button class="sub_button" id="reg_user_button" onclick="reg_user()" style="margin-left:0px;">Register</button>
+						<button class="sub_button" id="upd_user_button" onclick="update_user()">Update</button>
+						<button class="del_button" id="del_user_button" onclick="del_user()">Delete</button><br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="variables">   
+					<h2 class="title">Variables</h2>
+					<div id="page">
+						<a style="font-weight: bold;font-size: 23px;">Associate Dean:</a><br><br>
+						<a>Name:</a><br>
+						<input class="input_box" type="text" id="a_dean_name" placeholder="Text" autofocus/><br><br>
+						<a>Email:</a><br>
+						<input class="input_box" type="text" id="a_dean_email" placeholder="Text" autofocus/><br><br>
+						<button class="sub_button" id="" onclick="save_a_dean()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_a_dean()" style="width: 80px;">Check</button><br><br>
+						<hr width="450px"><br><br>
+						<a style="font-weight: bold;font-size: 23px;">Associate Dean Administrative Assistant:</a><br><br>
+						<a>Name:</a><br>
+						<input class="input_box" type="text" id="ad_assis_name" placeholder="Text" autofocus/><br><br>
+						<a>Email:</a><br>
+						<input class="input_box" type="text" id="ad_assis_email" placeholder="Text" autofocus/><br><br>
+						<button class="sub_button" id="" onclick="save_ad_assis()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_ad_assis()" style="width: 80px;">Check</button><br><br>
+						<hr width="450px"><br><br>
+						<a style="font-weight: bold;font-size: 23px;">Software Receiving Mail:</a><br><br>
+						<a>Email:</a><br>
+						<input class="input_box" type="text" id="rec_email" placeholder="Text" autofocus/><br><br>
+						<button class="sub_button" id="" onclick="save_rec_email()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_rec_email()" style="width: 80px;">Check</button><br><br>
+						<hr width="450px"><br><br>
+						<a style="font-weight: bold;font-size: 23px;">Purchasing Auto-Email Template:</a><br><br>
+						<a>Message:</a><br>
+						<textarea class="textarea_box" id="purch_auto_email" placeholder="Text"></textarea><br><br>
+						<button class="sub_button" id="" onclick="save_purch_auto_email()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_purch_auto_email()" style="width: 80px;">Check</button><br><br>
+						<hr width="450px"><br><br>
+						<a style="font-weight: bold;font-size: 23px;">Renewing Auto-Email Template:</a><br><br>
+						<a>Message:</a><br>
+						<textarea class="textarea_box" id="renew_auto_email" placeholder="Text"></textarea><br><br>
+						<button class="sub_button" id="" onclick="save_renew_auto_email()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_renew_auto_email()" style="width: 80px;">Check</button><br><br>
+						<hr width="450px"><br><br>
+						<a style="font-weight: bold;font-size: 23px;">Receiving Auto-Email Template:</a><br><br>
+						<a>Message:</a><br>
+						<textarea class="textarea_box" id="deliv_auto_email" placeholder="Text"></textarea><br><br>
+						<button class="sub_button" id="" onclick="save_deliv_auto_email()" style="margin-left:255px;width: 80px;">Save</button>
+						<button class="sub_button" id="" onclick="check_deliv_auto_email()" style="width: 80px;">Check</button><br><br>
+						<br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+				<div id="Reports">   
+					<h2 class="title">Reports</h2>
+					<div id="page">
+						<a style="font-size:22px;">Select report type:</a>
+						<select id="rprt_typ" style="width:300px;font-size:19px;">
+							<option value="1" selected>Software</option>
+							<option value="2">Software Expiry</option>
+							<option value="4">Expired Software Budget</option>
+							<option value="3">Software Ordered & Not Received</option>
+							<option value="5">Faculty/Staff Directory</option>
+						</select><br>
+						<div id="rprt_type_cntnt">
+						</div>
+						<div id="rprt_table">
+						</div>
+						
+						<br><br><br><br><br>
+					</div>
+				</div>
+				<!----------------------------------------------------------->
+			</div>
+			<footer>© 2016 - All rights reserved</footer>
+			
+		</div>
+	</body>
+</html>
+
+<script>
+	var USER_PRIV, TABLE_SHIFT;
+	var files;
+	var Files=[]; 
+	var files_txt="";
+	
+	$(document).ready(function(){	
+	
+		$('.tab-content > div').not("#sw_operations").hide();
+		
+		$("#ret_op_button").hide();
+		$("#ret_sw_button").hide();
+		$("#ret_fac_button").hide();
+		$("#ret_vend_button").hide();
+		$("#ret_user_button").hide();
+		
+		$("#reg_op_button").hide();
+		$("#renew_op_button").hide();
+		$("#reg_sw_button").hide();
+		$("#reg_fac_button").hide();
+		$("#reg_vend_button").hide();
+		$("#reg_user_button").hide();
+		
+		$("#upd_op_button").hide();
+		$("#upd_sw_button").hide();
+		$("#upd_fac_button").hide();
+		$("#upd_vend_button").hide();
+		$("#upd_user_button").hide();
+		
+		$("#del_op_button").hide();
+		$("#del_sw_button").hide();
+		$("#del_fac_button").hide();
+		$("#del_vend_button").hide();
+		$("#del_user_button").hide();
+		
+		
+		$("#purch_email").show();
+		$("#purch_email_txt").show();
+		$("#purch_email_tip").show();
+		$("#renew_email").hide();
+		$("#renew_email_txt").hide();
+		$("#renew_email_tip").hide();
+		
+		$.ajax({
+			url: 'http://localhost:8081/privilage',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data){
+				if(data==-2)	alert("priv Error");
+				else
+				{
+					switch(data[0].user_priv){
+						case '1':
+							USER_PRIV = 1;
+							$("#ret_op_button").show();
+							$("#ret_sw_button").show();
+							$("#ret_fac_button").show();
+							$("#ret_vend_button").show();
+							$("#ret_user_button").show();
+							
+							$("#reg_op_button").show();
+							$("#reg_sw_button").show();
+							$("#reg_fac_button").show();
+							$("#reg_vend_button").show();
+							$("#reg_user_button").show();
+							
+							$('[href="#users"]').closest('li').show();
+							$("h2").css({"margin-top": "-186px"});
+							break;
+						case '2':
+							USER_PRIV = 2;
+							$("#ret_op_button").show();
+							$("#ret_sw_button").show();
+							$("#ret_fac_button").show();
+							$("#ret_vend_button").show();
+							$("#ret_user_button").show();
+							
+							$("#reg_op_button").show();
+							$("#reg_sw_button").show();
+							$("#reg_fac_button").show();
+							$("#reg_vend_button").show();
+							$("#reg_user_button").show();
+		
+							$('[href="#users"]').closest('li').hide();
+							$("h2").css({"margin-top": "-150px"});
+							break;
+						case '3':
+							USER_PRIV = 3;
+							$("#ret_op_button").show();
+							$("#ret_sw_button").show();
+							$("#ret_fac_button").show();
+							$("#ret_vend_button").show();
+							$("#ret_user_button").show();
+							
+							$('[href="#users"]').closest('li').hide();
+							$("h2").css({"margin-top": "-150px"});
+							break;
+					}
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error priv");
+			},
+			async:false
+		});
+		
+		lic_sw();
+		
+		$('.fileUploader').uploader({
+			MessageAreaText: "Please select a file."
+		});
+	});
+
+	$('.tab a').on('click', function (e) {
+		e.preventDefault();  
+		$(".tab a").removeClass('active');
+		$(this).addClass('active');
+		if($(this).attr('id')=='admin-tab') 	$("#users-tab").addClass('active');
+		if($(this).hasClass("child-tab"))	$("#admin-tab").addClass('active');
+		target = $(this).attr('href');
+		$('.tab-content > div').not(target).hide();
+		$(target).fadeIn(600);
+	});
+
+	//-------------------------------------------------------------------------------------------
+			
+	$('#op_sw_name').on('input',function(){
+		var sw_name = $('#op_sw_name').val().replace(/ /g, "+");
+		
+		var post_data = 'sw_name='+sw_name;
+		
+		$.ajax({
+			url: 'http://localhost:8081/autocomplete_op',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "text",
+			data: post_data,
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error!");
+				if(data==0)		alert("No found results");
+				else
+				{ 
+					var Data = JSON.parse(data);
+					$("#autocomplete_op").empty();
+					for(var i=0;i<Data.length;i++)
+						$('#autocomplete_op').append('<option>'+Data[i]+'</option>');
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error!");
+				console.log("Error!");
+			},
+			async:false
+		});
+	});
+	
+	document.getElementById('op_sw_name').addEventListener("keyup", function () {
+		if (event.keyCode == 13) {
+			$("#autocomplete_op").empty();
+		}
+	}, false);
+	
+	$("#op_sw_name").keypress(function(event) {
+		if (event.which == 13) {
+			search_purchase_op();
+		}
+	});	
+	
+	function search_purchase_op(){
+			//necessary fields
+		if(($('#op_sw_name').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var sw_name = $('#op_sw_name').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name;
+			
+			$.ajax({
+				url: 'http://localhost:8081/search_purchase_op',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "json",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("Not registered in operations table");
+					if(data==0)		alert("Not registered in software table");
+					else
+					{
+						$('#op_sw_name').val(data[0].sw_id);
+						$('#R_num').val(data[0].R_num);
+						$('#P_num').val(data[0].P_num);
+						$('#amount').val(data[0].amount);
+						//if(data[0].currency=="AED")  $('#curr_aed.radio').prop('checked', true);
+						//else						 $('#curr_usd.radio').prop('checked', true);
+						//$('#new_sw').val(data[0].new_sw);
+						if(data[0].order_date!="0")
+							$('#order_date').val(data[0].order_date);
+						else 
+							$('#order_date').val('');
+						$('#received').val(data[0].received);
+						if(data[0].received=='1')	
+						{
+							$("#deliv_info").empty();
+							add_html_dates();
+							if(data[0].rec_date!="0")
+								$('#rec_date').val(data[0].rec_date);
+							else 
+								$('#rec_date').val('');
+							if(data[0].lic_str_date!="0")
+								$('#lic_str_date').val(data[0].lic_str_date);
+							else 
+								$('#lic_str_date').val('');
+							if(data[0].lic_exp_date!="0")
+								$('#lic_exp_date').val(data[0].lic_exp_date);
+							else 
+								$('#lic_exp_date').val('');
+						}
+						else if(data[0].received=='0')
+						{
+							$("#deliv_info").empty();
+						}
+						$('#op_comments').val(data[0].op_comments);
+						
+						if(USER_PRIV==1){
+							$("#reg_op_button").hide();
+							$("#renew_op_button").show();
+							$("#upd_op_button").show();
+							$("#del_op_button").show();
+						}
+						else if(USER_PRIV==2){
+							$("#reg_op_button").hide();
+							$("#renew_op_button").show();
+							$("#upd_op_button").show();
+						}
+						$("#purch_email").hide();
+						$("#purch_email_txt").hide();
+						$("#purch_email_tip").hide();
+						$("#renew_email").show();
+						$("#renew_email_txt").show();
+						$("#renew_email_tip").show();
+						$("#received").prop('disabled', false);
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function purchase_op(){
+		//necessary fields
+		if(($('#op_sw_name').val()=="")){
+			alert("Please enter all necessary fields");
+		}
+		else{
+			var sw_name      = $('#op_sw_name').val().replace(/ /g, "+");
+			var R_num        = $('#R_num').val().replace(/ /g, "+");
+			var P_num        = $('#P_num').val().replace(/ /g, "+");
+			var amount       = $('#amount').val().replace(/ /g, "+");
+			//var currency     = $("#page input[type='radio']:checked").val();
+			//var new_sw       = $('#new_sw').val().replace(/ /g, "+");
+			
+			if($('#purch_email').is(':visible')) 
+				var purch_email = document.getElementById("purch_email").checked;
+			if($('#renew_email').is(':visible')) 
+				var renew_email = document.getElementById("renew_email").checked;
+			
+			var order_date   = $('#order_date').val().replace(/ /g, "+");
+			var received 	 = $('#received').val().replace(/ /g, "+");
+			if(received=='1'){
+				var dlv_email 	 = document.getElementById("dlv_email").checked;
+				var rec_date 	 = $('#rec_date').val().replace(/ /g, "+");
+				var lic_str_date = $('#lic_str_date').val().replace(/ /g, "+");
+				var lic_exp_date = $('#lic_exp_date').val().replace(/ /g, "+");
+			}
+			var comments 	 = $('#op_comments').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name+'&R_num='+R_num+'&P_num='+P_num+'&amount='+amount+'&new_sw='+false+'&purch_email='+purch_email+'&renew_email='+renew_email+'&order_date='+order_date+'&received='+received+'&dlv_email='+dlv_email+'&rec_date='+rec_date+'&lic_str_date='+lic_str_date+'&lic_exp_date='+lic_exp_date+'&comments='+comments;
+			
+			$.ajax({
+				url: 'http://localhost:8081/purchase_op',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("Dublicate purchasing process");
+					if(data==0)	alert("Not registered in software table");
+					else if(data==1){
+						alert("Successful Purchase");
+						/*$('#op_sw_name').val('');
+						$('#R_num').val('');
+						$('#P_num').val('');
+						$('#amount').val('');
+						//$('#page input[type=\'radio\']').val('');
+						//$('#new_sw').val('');
+						$('#order_date').val('');
+						//$('#received').val('');
+						$('#rec_date').val('');
+						$('#lic_str_date').val('');
+						$('#lic_exp_date').val('');
+						$('#op_comments').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+		
+	function renew_op(){
+		if(($('#op_sw_name').val()=="")){
+			alert("Please enter all necessary fields");
+		}
+		else{
+			var sw_name      = $('#op_sw_name').val().replace(/ /g, "+");
+			var R_num        = $('#R_num').val().replace(/ /g, "+");
+			var P_num        = $('#P_num').val().replace(/ /g, "+");
+			var amount       = $('#amount').val().replace(/ /g, "+");
+			//var currency     = $("#page input[type='radio']:checked").val();
+			//var new_sw       = $('#new_sw').val().replace(/ /g, "+");
+			
+			if($('#purch_email').is(':visible')) 
+				var purch_email = document.getElementById("purch_email").checked;
+			if($('#renew_email').is(':visible')) 
+				var renew_email = document.getElementById("renew_email").checked;
+			
+			var order_date   = $('#order_date').val().replace(/ /g, "+");
+			var received 	 = $('#received').val().replace(/ /g, "+");
+			if(received=='1'){
+				var dlv_email 	 = document.getElementById("dlv_email").checked;
+				var rec_date 	 = $('#rec_date').val().replace(/ /g, "+");
+				var lic_str_date = $('#lic_str_date').val().replace(/ /g, "+");
+				var lic_exp_date = $('#lic_exp_date').val().replace(/ /g, "+");
+			}
+			var comments 	 = $('#op_comments').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name+'&R_num='+R_num+'&P_num='+P_num+'&amount='+amount+'&new_sw='+false+'&purch_email='+purch_email+'&renew_email='+renew_email+'&order_date='+order_date+'&received='+received+'&dlv_email='+dlv_email+'&rec_date='+rec_date+'&lic_str_date='+lic_str_date+'&lic_exp_date='+lic_exp_date+'&comments='+comments;
+			
+			$.ajax({
+				url: 'http://localhost:8081/renew_op',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("Not registered in operations table");
+					if(data==0)		alert("Not registered in software table");
+					else if(data==1){
+						alert("Successful Renew");
+						/*$('#op_sw_name').val('');
+						$('#R_num').val('');
+						$('#P_num').val('');
+						$('#amount').val('');
+						//$('#page input[type=\'radio\']').val('');
+						//$('#new_sw').val('');
+						$('#order_date').val('');
+						//$('#received').val('');
+						$('#rec_date').val('');
+						$('#lic_str_date').val('');
+						$('#lic_exp_date').val('');
+						$('#op_comments').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function upd_purchase_op(){
+		//necessary fields
+		if(($('#op_sw_name').val()=="")){
+			alert("Please enter all necessary fields");
+		}
+		else{
+			var sw_name      = $('#op_sw_name').val().replace(/ /g, "+");
+			var R_num        = $('#R_num').val().replace(/ /g, "+");
+			var P_num        = $('#P_num').val().replace(/ /g, "+");
+			var amount       = $('#amount').val().replace(/ /g, "+");
+			//var currency     = $("#page input[type='radio']:checked").val();
+			//var new_sw       = $('#new_sw').val().replace(/ /g, "+");
+			
+			if($('#purch_email').is(':visible')) 
+				var purch_email = document.getElementById("purch_email").checked;
+			if($('#renew_email').is(':visible')) 
+				var renew_email = document.getElementById("renew_email").checked;
+			
+			var order_date   = $('#order_date').val().replace(/ /g, "+");
+			var received 	 = $('#received').val().replace(/ /g, "+");
+			if(received=='1'){
+				var dlv_email 	 = document.getElementById("dlv_email").checked;
+				var rec_date 	 = $('#rec_date').val().replace(/ /g, "+");
+				var lic_str_date = $('#lic_str_date').val().replace(/ /g, "+");
+				var lic_exp_date = $('#lic_exp_date').val().replace(/ /g, "+");
+			}
+			var comments 	 = $('#op_comments').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name+'&R_num='+R_num+'&P_num='+P_num+'&amount='+amount+'&new_sw='+false+'&purch_email='+purch_email+'&renew_email='+renew_email+'&order_date='+order_date+'&received='+received+'&dlv_email='+dlv_email+'&rec_date='+rec_date+'&lic_str_date='+lic_str_date+'&lic_exp_date='+lic_exp_date+'&comments='+comments;
+			
+			$.ajax({
+				url: 'http://localhost:8081/upd_purchase_op',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("Not registered in operations table");
+					if(data==0)		alert("Not registered in software table");
+					else if(data==1){
+						alert("Successful Purchase Update");
+						/*$('#op_sw_name').val('');
+						$('#R_num').val('');
+						$('#P_num').val('');
+						$('#amount').val('');
+						//$('#page input[type=\'radio\']').val('');
+						//$('#new_sw').val('');
+						$('#order_date').val('');
+						//$('#received').val('');
+						$('#rec_date').val('');
+						$('#lic_str_date').val('');
+						$('#lic_exp_date').val('');
+						$('#op_comments').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+
+	function del_purchase_op(){
+		if (confirm("Are you sure you want to delete this operation?") == true) {
+			if(($('#op_sw_name').val()=="")){
+				alert("Please enter all necessary fields");
+			}
+			else{
+				var sw_name = $('#op_sw_name').val().replace(/ /g, "+");
+				
+				var post_data = 'sw_name='+sw_name;
+			
+				$.ajax({
+					url: 'http://localhost:8081/del_purchase_op',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==-1)	alert("Not registered in operations table");
+						if(data==0)		alert("Not registered in software table");
+						else if(data==1)
+						{
+							alert("Purchase operation is deleted successfully");
+							$('#op_sw_name').val('');
+							$('#R_num').val('');
+							$('#P_num').val('');
+							$('#amount').val('');
+							//$('#page input[type=\'radio\']').val('');
+							//$('#new_sw').val('');
+							$('#order_date').val('');
+							//$('#received').val('');
+							$('#rec_date').val('');
+							$('#lic_str_date').val('');
+							$('#lic_exp_date').val('');
+							$('#op_comments').val('');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	}
+
+	$("#order_date").datepicker({
+		inline: true
+	});
+	
+	$("#rec_date").datepicker({
+		inline: true
+	});
+	
+	$("#lic_str_date").datepicker({
+		inline: true
+	});
+	
+	$("#lic_exp_date").datepicker({
+		inline: true
+	});
+	
+	$("#st_date").datepicker({
+		inline: true
+	});
+	
+	$("#end_date").datepicker({
+		inline: true
+	});
+	
+	$('#received').change(function() {
+		if ($(this).val() === '1') {
+			add_html_dates();
+		}
+		else if($(this).val() === '0') {
+			$("#deliv_info").empty();
+		}
+	});
+	
+	function add_html_dates(){
+		$("#deliv_info").append('<input type="checkbox" class="mail_radio_button" id="dlv_email"><a class="mail_ch_box_txt" id="">Send a "<b><i>Receiving</i></b>" mail to A. Dean & his Assistant?</a><div class="content" id="renew_email_tip" style="margin-top:25px;"><div class="help-tip"><p>The "Delivery" email can be sent using only the "Update" button.</p></div></div><br><br>');
+		
+		var rec_date = $('<input class="input_box" id="rec_date" placeholder="Click here" />');
+		$(rec_date).datepicker();
+		var lic_str_date = $('<input class="input_box" id="lic_str_date" placeholder="Click here" />');
+		$(lic_str_date).datepicker();
+		var lic_exp_date = $('<input class="input_box" id="lic_exp_date" placeholder="Click here" />');
+		$(lic_exp_date).datepicker();
+		$("#deliv_info").append("<a>Delivery Date:</a><br>");
+		$("#deliv_info").append(rec_date);
+		$("#deliv_info").append("<br><br>");
+		$("#deliv_info").append("<a>License Start Date:</a><br>");
+		$("#deliv_info").append(lic_str_date);
+		$("#deliv_info").append("<br><br>");
+		$("#deliv_info").append("<a>License Expire Date:</a><br>");
+		$("#deliv_info").append(lic_exp_date);
+		$("#deliv_info").append("<br><br>");
+	}
+	
+	/*$('#new_sw').change(function() {
+		if ($(this).val() === '1'){ 	
+			$("#purch_email").empty();
+			$("#renew_email").empty();
+		}
+		else if($(this).val() === '0'){ 	
+			$("#send_a_email").empty(); 
+			$("#send_a_email").append('<input type="checkbox" class="mail_radio_button" id="renew_email"><a class="mail_ch_box_txt" id="">Send a "<b><i>Renew</i></b>" mail to the "A. Dean & Assistant"?</a>');
+		}
+	});*/
+	
+	//-------------------------------------------------------------------------------------------	
+		
+	$('#sw_name').on('input',function(){
+		var sw_name = $('#sw_name').val().replace(/ /g, "+");
+		
+		var post_data = 'sw_name='+sw_name;
+		
+		$.ajax({
+			url: 'http://localhost:8081/autocomplete_sw',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "text",
+			data: post_data,
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error!");
+				if(data==0)		alert("No found results");
+				else
+				{ 
+					var Data = JSON.parse(data);
+					$("#autocomplete_sw").empty();
+					for(var i=0;i<Data.length;i++)
+						$('#autocomplete_sw').append('<option>'+Data[i]+'</option>');
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error!");
+				console.log("Error!");
+			},
+			async:false
+		});
+	});
+	
+	document.getElementById('sw_name').addEventListener("keyup", function () {
+		if (event.keyCode == 13) {
+			$("#autocomplete_sw").empty();
+		}
+	}, false);
+	
+	$("#sw_name").keypress(function(event) {
+		if (event.which == 13) {
+			search_sw();
+		}
+	});	
+	
+	function search_sw(){
+		//necessary fields
+		if(($('#sw_name').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var sw_name = $('#sw_name').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name;
+			
+			$.ajax({
+				url: 'http://localhost:8081/search_sw',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "json",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error!");
+					if(data==0)		alert("No found results");
+					else
+					{
+						$('#version').val(data[0].version);
+						$('#products').val(data[0].products);
+						$('#lic_type').val(data[0].lic_type);
+						$('#lic_server_port').val(data[0].lic_server_port);
+						$('#num_lic').val(data[0].num_lic);
+						$('#fac_name').val(data[0].fac_id);
+						$('#vend_name').val(data[0].vend_id);
+						
+						var files_list = data[0].files.split("&&"); files_list.pop();
+						
+						$('.file-list').empty();
+						show_files_txt(files_list);
+						
+						
+						
+						console.log("list in mySQL:");
+						console.log(data[0].files);
+						console.log("------------------");
+						
+						
+						
+						$('#sw_comments').val(data[0].comments);
+						if(USER_PRIV==1){
+							$("#upd_sw_button").show();
+							$("#del_sw_button").show();
+						}
+						else if(USER_PRIV==2){
+							$("#upd_sw_button").show();
+						}
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error!");
+					console.log("Error!");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function reg_sw(){
+		//necessary fields
+		if($('#sw_name').val()==""){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var sw_name = $('#sw_name').val().replace(/ /g, "+");
+			var version = $('#version').val().replace(/ /g, "+");
+			var products = $('#products').val().replace(/ /g, "+");
+			var lic_type = $('#lic_type').val().replace(/ /g, "+");
+			var lic_server_port = $('#lic_server_port').val().replace(/ /g, "+");
+			var num_lic = $('#num_lic').val().replace(/ /g, "+");
+			var fac_name = $('#fac_name').val().replace(/ /g, "+");
+			var vend_name = $('#vend_name').val().replace(/ /g, "+");
+			var sw_comments = $('#sw_comments').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name+'&version='+version+'&products='+products+'&lic_type='+lic_type+'&lic_server_port='+lic_server_port+'&num_lic='+num_lic+'&fac_name='+fac_name+'&vend_name='+vend_name+'&files='+files_txt+'&sw_comments='+sw_comments;
+			
+			console.log("files_txt: "+files_txt);
+			
+			$.ajax({
+				url: 'http://localhost:8081/reg_sw',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-4)	alert("This vendor does not exist");
+					if(data==-3)	alert("This faculty does not exist");
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("This software is already registered");
+					else if(data==1)
+					{
+						if((files=="")||(files==null)){
+							alert("Software is registered successfully without file uploads");
+						}
+						else{
+							upload_files();
+						}
+						/*$('#sw_name').val('');
+						$('#version').val('');
+						$('#products').val('');
+						$('#lic_type').val('');
+						$('#lic_server_port').val('');
+						$('#num_lic').val('');
+						$('#fac_name').val('');
+						$('#vend_name').val('');
+						$('#sw_comments').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function update_sw(){
+			//necessary fields
+		if(($('#sw_name').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var sw_name = $('#sw_name').val().replace(/ /g, "+");
+			var version = $('#version').val().replace(/ /g, "+");
+			var products = $('#products').val().replace(/ /g, "+");
+			var lic_type = $('#lic_type').val().replace(/ /g, "+");
+			var lic_server_port = $('#lic_server_port').val().replace(/ /g, "+");
+			var num_lic = $('#num_lic').val().replace(/ /g, "+");
+			var fac_name = $('#fac_name').val().replace(/ /g, "+");
+			var vend_name = $('#vend_name').val().replace(/ /g, "+");
+			var sw_comments = $('#sw_comments').val().replace(/ /g, "+");
+			
+			var post_data = 'sw_name='+sw_name+'&version='+version+'&products='+products+'&lic_type='+lic_type+'&lic_server_port='+lic_server_port+'&num_lic='+num_lic+'&fac_name='+fac_name+'&vend_name='+vend_name+'&files='+files_txt+'&sw_comments='+sw_comments;
+				
+			console.log("files_txt: "+files_txt);
+			
+			$.ajax({
+				url: 'http://localhost:8081/update_sw',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==-3)	alert("This faculty does not exist");
+					if(data==-4)	alert("This vendor does not exist");
+					if(data==0)		alert("This software is not registered");
+					else if(data==1)
+					{
+						if((files=="")||(files==null)){
+							alert("Software is updated successfully without file uploads");
+						}
+						else{
+							upload_files();
+						}
+						/*$('#sw_name').val('');
+						$('#version').val('');
+						$('#products').val('');
+						$('#lic_type').val('');
+						$('#lic_server_port').val('');
+						$('#num_lic').val('');
+						$('#fac_name').val('');
+						$('#vend_name').val('');
+						$('#sw_comments').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error!");
+					console.log("Error!");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function del_sw(){
+		if (confirm("Are you sure you want to delete this software?") == true) {
+			if($('#sw_name').val()==""){
+				alert("Please enter the necessary fields");
+			}
+			else{
+				var sw_name = $('#sw_name').val().replace(/ /g, "+");
+				
+				var post_data = 'sw_name='+sw_name;
+				
+				$.ajax({
+					url: 'http://localhost:8081/del_sw',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error!");
+						if(data==0)		alert("This software is not registered");
+						else if(data==1)
+						{
+							alert("Software is deleted successfully");
+							$('#sw_name').val('');
+							$('#version').val('');
+							$('#products').val('');
+							$('#lic_type').val('');
+							$('#lic_server_port').val('');
+							$('#num_lic').val('');
+							$('#fac_name').val('');
+							$('#vend_name').val('');
+							$('#sw_comments').val('');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error!");
+						console.log("Error!");
+					},
+					async:false
+				});
+			}
+		}
+	}	
+
+	function upload_files(){
+		
+		var data = new FormData();
+		$.each(Files, function(key, value){
+			data.append(key, value);
+		});
+		
+		$.ajax({
+			url: 'http://localhost:8081/upload_files',
+			type: 'POST',
+			data: data,
+			cache: false,
+			dataType: 'json',
+			processData: false,
+			contentType: false, 
+			success: function(data, textStatus, jqXHR){
+				if(typeof data.error === 'undefined'){
+					console.log("Files are uploaded successfully");
+					console.log(Files);
+					alert("Software is registered and the attached files are uploaded");
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				console.log("error");
+			}
+		});
+	}
+	
+	$.fn.uploader = function( options ) {
+		var settings = $.extend({
+			MessageAreaText: "No files selected.",
+			MessageAreaTextWithFiles: "File List:",
+			DefaultErrorMessage: "Unable to open this file.",
+			BadTypeErrorMessage: "Invalid file type. Only pdf files are acceptable.",
+			acceptedFileTypes: ['pdf']
+		}, options );
+  
+		//update the messaging 
+		$('.file-uploader__message-area p').text(options.MessageAreaText || settings.MessageAreaText);
+
+		//create and add the file list and the hidden input list
+		var fileList = $('<ul class="file-list"></ul>');
+		var hiddenInputs = $('<div class="hidden-inputs hidden"></div>');
+		$('.file-uploader__message-area').after(fileList);
+		$('.file-list').after(hiddenInputs);
+	 
+		//when choosing a file, add the name to the list and copy the file input into the hidden inputs
+		$('.file-chooser__input').on('change', function(event){
+			
+			$('.file-list').empty();
+			
+			var uploadId = 1 ;
+			files = event.target.files;
+			
+			console.log(files.length+" Files:");
+			
+			console.log("filling up Files");
+			Files=[];
+			for(var i = 0 ; i<files.length ; i++)
+				Files.push(files[i]);
+			
+			
+			$('.file-chooser').removeClass('error');
+			$('.error-message').remove();
+
+			for(var i=0;i<Files.length;i++){
+				var check = checkFile(Files[i].name);
+				if(check === "valid") {
+					// move the 'real' one to hidden list 
+					$('.hidden-inputs').append($('.file-chooser__input')); 
+
+					//insert a clone after the hiddens (copy the event handlers too)
+					$('.file-chooser').append($('.file-chooser__input').clone({ withDataAndEvents: true})); 
+
+					//add the name and a remove button to the file-list
+					$('.file-list').append('<li style="display: none;"><span class="file-list__name">' + Files[i].name + '</span><button class="removal-button" data-uploadid="'+ uploadId +'">x</button></li>');
+					$('.file-list').find("li:last").show();
+
+
+					//so the event handler works on the new "real" one
+					$('.hidden-inputs .file-chooser__input').removeClass('file-chooser__input').attr('data-uploadId', uploadId); 
+
+					//update the message area
+					$('.file-uploader__message-area p').text(options.MessageAreaTextWithFiles || settings.MessageAreaTextWithFiles);
+					uploadId++;
+				}
+				else{
+					//indicate that the file is not ok
+					var errorText = options.DefaultErrorMessage || settings.DefaultErrorMessage;
+
+					if(check === "badFileName") {
+						errorText = options.BadTypeErrorMessage || settings.BadTypeErrorMessage;
+					}
+					$('.file-chooser__input').after('<p class="error-message" style="background-color:#d65d38;color:white; padding: 10px 10px 10px 10px;">'+ errorText +'</p>');
+				}
+				console.log("uploadId = "+(uploadId-1)+" , "+Files[i].name);
+			}
+			
+			files_txt=[];
+			for(var i=0;i<Files.length;i++){   
+					files_txt+=Files[i].name;
+					files_txt+="&&";
+				}
+				
+			
+			//-------------------------------------------------------------------
+			$('.removal-button').on('click', function(e){
+				e.preventDefault();
+				
+				//Deleting 
+				console.log("Deleting Files with id ( "+($(this).data('uploadid')-1)+" ) :");
+				console.log(Files[($(this).data('uploadid')-1)].name);
+				Files[($(this).data('uploadid')-1)] = "" ;
+				
+				console.log("Remained Files: ");
+				if(Files=="") 
+					console.log("Empty");
+				else
+					for(var i=0;i<Files.length;i++)
+						console.log(Files[i].name);
+				
+				
+				files_txt=[];
+				for(var i=0;i<Files.length;i++)
+					if(!(Files[i]=="")){   
+						files_txt+=Files[i].name;
+						files_txt+="&&";
+					}
+				
+				//remove the name from file-list that corresponds to the button clicked
+				$(this).parent().queue(function(){
+					$(this).remove();  //remove of visual file item
+					if($('.file-list li').length === 0){
+						console.log("Zero files_obj");
+						$('.file-uploader__message-area p').text(options.MessageAreaText || settings.MessageAreaText);
+					}
+				});
+				console.log("------------------");
+			});
+			//-------------------------------------------------------------------
+		});
+     
+		var checkFile = function(fileName) {
+			var accepted          = "invalid",
+			acceptedFileTypes = this.acceptedFileTypes || settings.acceptedFileTypes,
+			regex;
+
+			for ( var i = 0; i < acceptedFileTypes.length; i++ ) {
+				regex = new RegExp("\\." + acceptedFileTypes[i] + "$", "i");
+
+				if ( regex.test(fileName) ) {
+					accepted = "valid";
+					break;
+				} 
+				else {
+					accepted = "badFileName";
+				}
+			}
+			return accepted;
+		};
+	}; 
+	
+	function show_files_txt(files){
+		$('.file-chooser').removeClass('error');
+		$('.error-message').remove();
+		
+		var uploadId = 1;
+
+		for(var i=0;i<files.length;i++)
+		{
+			// move the 'real' one to hidden list 
+			$('.hidden-inputs').append($('.file-chooser__input')); 
+
+			//insert a clone after the hiddens (copy the event handlers too)
+			$('.file-chooser').append($('.file-chooser__input').clone({ withDataAndEvents: true})); 
+
+			//add the name and a remove button to the file-list
+			$('.file-list').append('<li style="display: none;"><span class="file-list__name">' + files[i] + '</span><button class="removal-button" data-uploadid="'+ uploadId +'">x</button></li>');
+			$('.file-list').find("li:last").show();
+
+
+			//so the event handler works on the new "real" one
+			$('.hidden-inputs .file-chooser__input').removeClass('file-chooser__input').attr('data-uploadId', uploadId); 
+			
+			uploadId++;
+			console.log("uploadId = "+(uploadId-1)+" , "+files[i]);
+		}
+		//-------------------------------------------------------------------
+		//remove button handler
+		$('.removal-button').on('click', function(e){
+			e.preventDefault();
+			alert("You don't have authority to delete files in the server. However, you can upload files.");
+			//remove the corresponding hidden input
+			/*$('.hidden-inputs input[data-uploadid="'+ $(this).data('uploadid') +'"]').remove(); 
+
+			console.log("Deleted text with id ( "+($(this).data('uploadid')-1)+" ):");
+			console.log(files[$(this).data('uploadid')-1]);
+			files[$(this).data('uploadid')-1]=null;
+			
+			files_txt="";
+			for(var i=0;i<files.length;i++)
+				if(files[i]!=null){
+					files_txt+=files[i];
+					files_txt+="&&";
+				}
+			console.log("Remained files_txt: ");
+			if(files_txt!="") console.log(files_txt);
+			else 			  console.log("Empty");
+			
+			//remove the name from file-list that corresponds to the button clicked
+			$(this).parent().queue(function(){
+				$(this).remove();
+				if($('.file-list li').length === 0){
+					console.log("Zero files_txt");
+					files_txt="";
+				}
+			});
+			console.log("------------------");*/
+		});
+		//-------------------------------------------------------------------
+	}
+	
+	//-------------------------------------------------------------------------------------------
+			
+	$('#fac_staff_name').on('input',function(){
+		var fac_staff_name = $('#fac_staff_name').val().replace(/ /g, "+");
+		
+		var post_data = 'name='+fac_staff_name;
+		
+		$.ajax({
+			url: 'http://localhost:8081/autocomplete_fac',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "text",
+			data: post_data,
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error!");
+				if(data==0)		alert("No found results");
+				else
+				{ 
+					var Data = JSON.parse(data);
+					$("#autocomplete_fac").empty();
+					for(var i=0;i<Data.length;i++)
+						$('#autocomplete_fac').append('<option>'+Data[i]+'</option>');
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error!");
+				console.log("Error!");
+			},
+			async:false
+		});
+	});
+	
+	document.getElementById('fac_staff_name').addEventListener("keyup", function () {
+		if (event.keyCode == 13) {
+			$("#autocomplete_fac").empty();
+		}
+	}, false);
+	
+	$("#fac_staff_name").keypress(function(event) {
+		if (event.which == 13) {
+			search_fac();
+		}
+	});	
+	
+	function search_fac(){
+			//necessary fields
+		if(($('#fac_staff_name').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var fac_staff_name = $('#fac_staff_name').val().replace(/ /g, "+");
+			
+			var post_data = 'name='+fac_staff_name;
+			
+			$.ajax({
+				url: 'http://localhost:8081/search_fac',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "json",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==0)		alert("No found results");
+					else
+					{
+						$('#fac_staff_name').val(data[0].name);
+						$('#fac_pos').val(data[0].position);
+						$('#fac_type').val(data[0].type);
+						$('#fac').val(data[0].fac);
+						set_dept_options(data[0].fac);
+						$('#dept').val(data[0].dept);
+						$('#fac_office').val(data[0].office);
+						$('#fac_email').val(data[0].email);
+						$('#fac_phone').val(data[0].phone);
+						$('#fac_mobile').val(data[0].mobile);
+						$('#fac_comments').val(data[0].comments);
+						
+						if(USER_PRIV==1){
+							$("#upd_fac_button").show();
+							$("#del_fac_button").show();
+						}
+						else if(USER_PRIV==2){
+							$("#upd_fac_button").show();
+						}
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function reg_fac(){
+		//necessary fields
+		if(($('#fac_staff_name').val()=="")||($('#fac_email').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var email_regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			var phone_regex = /^[\+]([0-9]{12})$/; 
+			
+			if(!email_regex.test($('#fac_email').val()))		alert("Write down a valid email please");
+			//else if(!phone_regex.test($('#fac_phone').val())) 	alert("Write down a valid phone number please");
+			//else if(!phone_regex.test($('#fac_mobile').val())) 	alert("Write down a valid mobile number please");
+			else
+			{
+				var fac_staff_name = $('#fac_staff_name').val().replace(/ /g, "+");
+				var fac_pos = $('#fac_pos').val().replace(/ /g, "+");
+				var fac_type = $('#fac_type').val().replace(/ /g, "+");
+				var fac = $('#fac').val().replace(/ /g, "+");
+				var dept = $('#dept').val().replace(/ /g, "+");
+				var fac_office = $('#fac_office').val().replace(/ /g, "+");
+				var fac_email = $('#fac_email').val().replace(/ /g, "+");
+				var fac_phone = $('#fac_phone').val().replace(/ /g, "+");
+				var fac_mobile = $('#fac_mobile').val().replace(/ /g, "+");
+				var fac_comments = $('#fac_comments').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+fac_staff_name+'&position='+fac_pos+'&type='+fac_type+'&fac='+fac+'&dept='+dept+'&office='+fac_office+'&email='+fac_email+'&phone='+fac_phone+'&mobile='+fac_mobile+'&comments='+fac_comments;
+				
+				$.ajax({
+					url: 'http://localhost:8081/reg_fac',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==-1)	alert("This faculty/staff is already registered");
+						else if(data==1)
+						{
+							alert("Faculty/Staff is registered successfully");
+							/*$('#fac_staff_name').val('');
+							$('#fac_type').val('');
+							$('#fac_dept').val('');
+							$('#fac_office').val('');
+							$('#fac_email').val('');
+							$('#fac_phone').val('');
+							$('#fac_mobile').val('');
+							$('#fac_comments').val('');*/
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+		
+	}
+	
+	function update_fac(){
+		//necessary fields
+		if(($('#fac_staff_name').val()=="")||($('#fac_email').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var email_regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			var phone_regex = /^[\+]([0-9]{12})$/; 
+			
+			if(!email_regex.test($('#fac_email').val()))		alert("Write down a valid email please");
+			//else if(!phone_regex.test($('#fac_phone').val())) 	alert("Write down a valid phone number please");
+			//else if(!phone_regex.test($('#fac_mobile').val())) 	alert("Write down a valid mobile number please");
+			else
+			{
+				var fac_staff_name = $('#fac_staff_name').val().replace(/ /g, "+");
+				var fac_pos = $('#fac_pos').val().replace(/ /g, "+");
+				var fac_type = $('#fac_type').val().replace(/ /g, "+");
+				var fac = $('#fac').val().replace(/ /g, "+");
+				var dept = $('#dept').val().replace(/ /g, "+");
+				var fac_office = $('#fac_office').val().replace(/ /g, "+");
+				var fac_email = $('#fac_email').val().replace(/ /g, "+");
+				var fac_phone = $('#fac_phone').val().replace(/ /g, "+");
+				var fac_mobile = $('#fac_mobile').val().replace(/ /g, "+");
+				var fac_comments = $('#fac_comments').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+fac_staff_name+'&position='+fac_pos+'&type='+fac_type+'&fac='+fac+'&dept='+dept+'&office='+fac_office+'&email='+fac_email+'&phone='+fac_phone+'&mobile='+fac_mobile+'&comments='+fac_comments;
+				
+				$.ajax({
+					url: 'http://localhost:8081/update_fac',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==0)		alert("This software is not registered");
+						else if(data==1)
+						{
+							alert("Software is updated successfully");
+							/*$('#fac_staff_name').val('');
+							$('#fac_type').val('');
+							$('#fac_dept').val('');
+							$('#fac_office').val('');
+							$('#fac_email').val('');
+							$('#fac_phone').val('');
+							$('#fac_mobile').val('');
+							$('#fac_comments').val('');*/
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}	
+	}
+
+	function del_fac(){
+		if (confirm("Are you sure you want to delete this Fac/Staff member?") == true) {
+			if(($('#fac_staff_name').val()=="")){
+				alert("Please enter the necessary fields");
+			}
+			else{
+				var fac_staff_name = $('#fac_staff_name').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+fac_staff_name;
+			
+				$.ajax({
+					url: 'http://localhost:8081/del_fac',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==0)		alert("This software is not registered");
+						else if(data==1)
+						{
+							alert("Software is deleted successfully");
+							$('#fac_staff_name').val('');
+							$('#fac_pos').val('');
+							$('#fac_dept').val('');
+							$('#fac_office').val('');
+							$('#fac_email').val('');
+							$('#fac_phone').val('');
+							$('#fac_mobile').val('');
+							$('#fac_comments').val('');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	}
+
+	$('#fac').change(function(e){
+		set_dept_options($("#fac").val());
+	});
+	
+	function set_dept_options(faculty){
+		switch(faculty)
+		{
+			case "ENG":
+				$("#dept").empty();
+				$("#dept").append("<option value='CHE'>Department of Chemical Engineering</option>");
+				$("#dept").append("<option value='CVE'>Department of Civil Engineering</option>");
+				$("#dept").append("<option value='CSE'>Department of Computer Science and Engineering</option>");
+				$("#dept").append("<option value='ELE'>Department of Electrical Engineering</option>");
+				$("#dept").append("<option value='ESM'>Department of Electrical Engineering</option>");
+				$("#dept").append("<option value='MCE'>Department of Mechanical Engineering</option>");
+				break;
+			case "ARCH-ART-DES":
+				$("#dept").empty();
+				$("#dept").append("<option value='ARCH'>Department of Architecture</option>");
+				$("#dept").append("<option value='ART-DES'>Department of Art and Design</option>");
+				$("#dept").append("<option value='CAAD'>Foundations Program of CAAD</option>");
+				break;
+			case "ART-SCI":
+				$("#dept").empty();
+				$("#dept").append("<option value='ARB-TRS'>Department of Arabic & Translation Studies</option>");
+				$("#dept").append("<option value='BIO-CHE-ENV'>Department of Biology, Chemistry and Environmental Sciences</option>");
+				$("#dept").append("<option value='ENG'>Department of English</option>");
+				$("#dept").append("<option value='INTER'>Department of International Studies</option>");
+				$("#dept").append("<option value='MASS-COMM'>Department of Mass Communication</option>");
+				$("#dept").append("<option value='MATH-STAT'>Department of Mathematics & Statistics</option>");
+				$("#dept").append("<option value='PHY'>Department of Physics</option>");
+				$("#dept").append("<option value='WRI'>Department of Writing Studies</option>");
+				$("#dept").append("<option value='ARTS'>Performing Arts Program</option>");
+				break;
+			case "SBA":
+				$("#dept").empty();
+				$("#dept").append("<option value='ACC'>Department of Accounting</option>");
+				$("#dept").append("<option value='ECO'>Department of Economics</option>");
+				$("#dept").append("<option value='FIN'>Department of Finance</option>");
+				$("#dept").append("<option value='MNG'>Department of Management</option>");
+				$("#dept").append("<option value='MARK-INFO'>Department of Marketing and Information Systems</option>");
+				break;
+		}
+	} 
+
+	//-------------------------------------------------------------------------------------------
+		
+	$('#vendor_name').on('input',function(){
+		var vendor_name = $('#vendor_name').val().replace(/ /g, "+");
+		
+		var post_data = 'name='+vendor_name;
+		
+		$.ajax({
+			url: 'http://localhost:8081/autocomplete_vend',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "text",
+			data: post_data,
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error!");
+				if(data==0)		alert("No found results");
+				else
+				{ 
+					var Data = JSON.parse(data);
+					$("#autocomplete_vend").empty();
+					for(var i=0;i<Data.length;i++)
+						$('#autocomplete_vend').append('<option>'+Data[i]+'</option>');
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error!");
+				console.log("Error!");
+			},
+			async:false
+		});
+	});
+	
+	document.getElementById('vendor_name').addEventListener("keyup", function () {
+		if (event.keyCode == 13) {
+			$("#autocomplete_vend").empty();
+		}
+	}, false);
+	
+	$("#vendor_name").keypress(function(event) {
+		if (event.which == 13) {
+			search_vend();
+		}
+	});	
+	
+	function search_vend(){
+			//necessary fields
+		if(($('#vendor_name').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var vendor_name = $('#vendor_name').val().replace(/ /g, "+");
+			
+			var post_data = 'name='+vendor_name;
+			
+			$.ajax({
+				url: 'http://localhost:8081/search_vend',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "json",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==0)		alert("No found results");
+					else
+					{
+						$('#vendor_name').val(data[0].name);
+						$('#vend_address').val(data[0].address);
+						$('#vend_email').val(data[0].email);
+						$('#vend_phone').val(data[0].phone);
+						$('#vend_sp_contact').val(data[0].sp_contact);
+						$('#vend_comments').val(data[0].comments);
+						
+						if(USER_PRIV==1){
+							$("#upd_vend_button").show();
+							$("#del_vend_button").show();
+						}
+						else if(USER_PRIV==2){
+							$("#upd_vend_button").show();
+						}
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error!");
+					console.log("Error!");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function reg_vend(){
+		//necessary fields
+		if(($('#vendor_name').val()=="")||($('#vend_email').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var email_regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			var phone_regex = /^[\+]([0-9]{12})$/; 
+			
+			if(!email_regex.test($('#vend_email').val()))		alert("Write down a valid email please");
+			//else if(!phone_regex.test($('#vend_phone').val())) 	alert("Write down a valid phone number please");
+			else
+			{
+				var vendor_name = $('#vendor_name').val().replace(/ /g, "+");
+				var vend_address = $('#vend_address').val().replace(/ /g, "+");
+				var vend_email = $('#vend_email').val().replace(/ /g, "+");
+				var vend_phone = $('#vend_phone').val().replace(/ /g, "+");
+				var vend_sp_contact = $('#vend_sp_contact').val().replace(/ /g, "+");
+				var vend_comments = $('#vend_comments').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+vendor_name+'&address='+vend_address+'&email='+vend_email+'&phone='+vend_phone+'&sp_contact='+vend_sp_contact+'&comments='+vend_comments;
+				
+				$.ajax({
+					url: 'http://localhost:8081/reg_vend',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==-1)	alert("This software is already registered");
+						else if(data==1)
+						{
+							alert("Vendor is registered successfully");
+							/*$('#vendor_name').val('');
+							$('#vend_address').val('');
+							$('#vend_email').val('');
+							$('#vend_phone').val('');
+							$('#vend_sp_contact').val('');
+							$('#vend_comments').val('');*/
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+		
+	}
+	
+	function update_vend(){
+		//necessary fields
+		if(($('#vendor_name').val()=="")||($('#vend_email').val()=="")){
+			alert("Please enter the necessary fields");
+		}
+		else{
+			var email_regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			var phone_regex = /^[\+]([0-9]{12})$/; 
+			
+			if(!email_regex.test($('#vend_email').val()))		alert("Write down a valid email please");
+			//else if(!phone_regex.test($('#vend_phone').val())) 	alert("Write down a valid phone number please");
+			else
+			{
+				var vendor_name = $('#vendor_name').val().replace(/ /g, "+");
+				var vend_address = $('#vend_address').val().replace(/ /g, "+");
+				var vend_email = $('#vend_email').val().replace(/ /g, "+");
+				var vend_phone = $('#vend_phone').val().replace(/ /g, "+");
+				var vend_sp_contact = $('#vend_sp_contact').val().replace(/ /g, "+");
+				var vend_comments = $('#vend_comments').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+vendor_name+'&address='+vend_address+'&email='+vend_email+'&phone='+vend_phone+'&sp_contact='+vend_sp_contact+'&comments='+vend_comments;
+					
+				$.ajax({
+					url: 'http://localhost:8081/update_vend',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==0)		alert("This software is not registered");
+						else if(data==1)
+						{
+							alert("Software is updated successfully");
+							/*$('#vendor_name').val('');
+							$('#vend_address').val('');
+							$('#vend_email').val('');
+							$('#vend_phone').val('');
+							$('#vend_sp_contact').val('');
+							$('#vend_comments').val('');*/
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}	
+	}
+
+	function del_vend(){
+		if (confirm("Are you sure you want to delete this vendor?") == true) {
+			if(($('#vendor_name').val()=="")){
+				alert("Please enter the necessary fields");
+			}
+			else{
+				var vendor_name = $('#vendor_name').val().replace(/ /g, "+");
+				
+				var post_data = 'name='+vendor_name;
+			
+				$.ajax({
+					url: 'http://localhost:8081/del_vend',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==0)		alert("This software is not registered");
+						else if(data==1)
+						{
+							alert("Software is deleted successfully");
+							$('#vendor_name').val('');
+							$('#vend_address').val('');
+							$('#vend_email').val('');
+							$('#vend_phone').val('');
+							$('#vend_sp_contact').val('');
+							$('#vend_comments').val('');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	}
+
+	//-------------------------------------------------------------------------------------------
+		
+	$('#user_fname').on('input',function(){
+		var user_fname = $('#user_fname').val().replace(/ /g, "+");
+		
+		var post_data = 'user_fname='+user_fname;
+		
+		$.ajax({
+			url: 'http://localhost:8081/autocomplete_user',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "text",
+			data: post_data,
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error!");
+				if(data==0)		alert("No found results");
+				else
+				{ 
+					var Data = JSON.parse(data);
+					$("#autocomplete_user").empty();
+					for(var i=0;i<Data.length;i++)
+						$('#autocomplete_user').append('<option>'+Data[i]+'</option>');
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error!");
+				console.log("Error!");
+			},
+			async:false
+		});
+	});
+	
+	document.getElementById('user_fname').addEventListener("keyup", function () {
+		if (event.keyCode == 13) {
+			$("#autocomplete_user").empty();
+		}
+	}, false);
+	
+	$("#user_fname").keypress(function(event) {
+		if (event.which == 13) {
+			search_user();
+		}
+	});	
+	
+	function search_user(){
+		//necessary fields
+		if(($('#user_fname').val()=="")){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var user_fname = $('#user_fname').val().replace(/ /g, "+");
+			
+			var post_data = 'user_fname='+user_fname;
+			
+			$.ajax({
+				url: 'http://localhost:8081/search_user',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "json",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					if(data==0)		alert("No found results");
+					else
+					{
+						$('#user_fname').val(data[0].user_fname);
+						if(data[0].fac_id!="") document.getElementById("is_fac").checked = true;
+						$('#user_name').val(data[0].user_name);
+						$('#user_pass1').val(data[0].user_pass);
+						$('#user_pass2').val(data[0].user_pass);
+						$('#user_priv').val(data[0].user_priv);
+						
+						if(USER_PRIV==1){
+							$("#upd_user_button").show();
+							$("#del_user_button").show();
+						}
+						else if(USER_PRIV==2){
+							$("#upd_user_button").show();
+						}
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	}
+	
+	function reg_user(){
+		//necessary fields
+		if(($('#user_fname').val()=="")||($('#user_name').val()=="")||($('#user_pass1').val()=="")||($('#user_pass2').val()=="")){
+			alert("Please enter all the necessary fields");
+		}
+		else if( $('#user_pass1').val() != $('#user_pass2').val() ){
+			alert("Passwords don't match");
+		}
+		else{
+			var user_fname = $('#user_fname').val().replace(/ /g, "+");
+			var is_fac = document.getElementById("is_fac").checked; 
+			var user_name = $('#user_name').val().replace(/ /g, "+");
+			var user_pass = CryptoJS.MD5($('#user_pass1').val().replace(/ /g, "+")).toString();
+			var user_priv = $('#user_priv').val().replace(/ /g, "+");
+			
+			var post_data = 'user_fname='+user_fname+'&is_fac='+is_fac+'&user_name='+user_name+'&user_pass='+user_pass+'&user_priv='+user_priv;
+			
+			$.ajax({
+				url: 'http://localhost:8081/reg_user',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-3)	alert("No such faculty/staff member");
+					if(data==-2)	alert("Error");
+					if(data==-1)	alert("Already registered");
+					else if(data==1)
+					{
+						alert("User is registered successfully");
+						/*$('#user_fname').val('');
+						document.getElementById("is_fac").checked = false;
+						$('#user_name').val('');
+						$('#user_pass1').val('');
+						$('#user_pass2').val('');
+						//$('#user_priv').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function update_user(){
+		//necessary fields
+		if(($('#user_fname').val()=="")||($('#user_name').val()=="")||($('#user_pass1').val()=="")||($('#user_pass2').val()=="")){
+			alert("Please enter all the necessary fields");
+		}
+		else if( $('#user_pass1').val() != $('#user_pass2').val() ){
+			alert("Passwords don't match");
+		}
+		else{
+			var user_fname = $('#user_fname').val().replace(/ /g, "+");
+			var is_fac = document.getElementById("is_fac").checked; 
+			var user_name = $('#user_name').val().replace(/ /g, "+");
+			var user_pass = CryptoJS.MD5($('#user_pass1').val().replace(/ /g, "+")).toString();
+			var user_priv = $('#user_priv').val().replace(/ /g, "+");
+			
+			var post_data = 'user_fname='+user_fname+'&is_fac='+is_fac+'&user_name='+user_name+'&user_pass='+user_pass+'&user_priv='+user_priv;
+			
+			$.ajax({
+				url: 'http://localhost:8081/update_user',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function(data, textStatus, jQxhr ){
+					if(data==-3)	alert("No such faculty/staff member");
+					if(data==-2)	alert("Error");
+					if(data==0)		alert("This User is not registered");
+					else if(data==1)
+					{
+						alert("User is updated successfully");
+						/*$('#user_fname').val('');
+						document.getElementById("is_fac").checked = false;
+						$('#user_name').val('');
+						$('#user_pass1').val('');
+						$('#user_pass2').val('');
+						//$('#user_priv').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function del_user(){
+		if (confirm("Are you sure you want to delete this user?") == true) {
+			if(($('#user_name').val()=="")){
+				alert("Please enter all necessary fields");
+			}
+			else{
+				var user_fname = $('#user_fname').val().replace(/ /g, "+");
+				
+				var post_data = 'user_fname='+user_fname;
+			
+				$.ajax({
+					url: 'http://localhost:8081/del_user',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function( data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error");
+						if(data==0)		alert("This user is not registered");
+						else if(data==1)
+						{
+							alert("User is deleted successfully");
+							$('#user_fname').val('');
+							document.getElementById("is_fac").checked = false;
+							$('#user_name').val('');
+							$('#user_pass1').val('');
+							$('#user_pass2').val('');
+							//$('#user_priv').val('');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	}
+	
+	//-------------------------------------------------------------------------------------------
+	
+	function save_a_dean(){
+		//necessary fields
+		if(($('#a_dean_name').val()=="")||($('#a_dean_email').val()=="")){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var a_dean_name = $('#a_dean_name').val().replace(/ /g, "+");
+			var a_dean_email = $('#a_dean_email').val().replace(/ /g, "+");
+			
+			var post_data = 'a_dean_name='+a_dean_name+'&a_dean_email='+a_dean_email;
+			
+			$.ajax({
+				url: 'http://localhost:8081/save_a_dean',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Associate dean is saved successfully");
+						/*$('#a_dean_name').val('');
+						$('#a_dean_email').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_a_dean(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	   alert("Error");
+				else if(data==0)   alert("Empty");
+				else
+				{
+					$('#a_dean_name').val(data[0].a_dean_name);
+					$('#a_dean_email').val(data[0].a_dean_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	function save_ad_assis(){
+		//necessary fields
+		if(($('#ad_assis_name').val()=="")||($('#ad_assis_email').val()=="")){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var ad_assis_name = $('#ad_assis_name').val().replace(/ /g, "+");
+			var ad_assis_email = $('#ad_assis_email').val().replace(/ /g, "+");
+			
+			var post_data = 'ad_assis_name='+ad_assis_name+'&ad_assis_email='+ad_assis_email;
+			
+			$.ajax({
+				url: 'http://localhost:8081/save_ad_assis',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Administrative assistant is saved successfully");
+						/*$('#ad_assis_name').val('');
+						$('#ad_assis_email').val('');*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_ad_assis(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error");
+				else
+				{
+					$('#ad_assis_name').val(data[0].ad_assis_name);
+					$('#ad_assis_email').val(data[0].ad_assis_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	function save_rec_email(){
+		//necessary fields
+		if($('#rec_email').val()==""){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var rec_email = $('#rec_email').val().replace(/ /g, "+");
+			
+			var post_data = 'rec_email='+rec_email;
+			
+			$.ajax({
+				url: 'http://localhost:8081/save_rec_email',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Receiving email is saved successfully");
+						//$('#rec_email').val('');
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_rec_email(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error");
+				else
+				{
+					$('#rec_email').val(data[0].rec_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	function save_purch_auto_email(){
+		//necessary fields
+		if($('#purch_auto_email').val()==""){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var purch_auto_email = $('#purch_auto_email').val().replace(/ /g, "+");
+			
+			var post_data = 'purch_auto_email='+purch_auto_email;
+			console.log(purch_auto_email);
+			$.ajax({
+				url: 'http://localhost:8081/save_purch_auto_email',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Receiving email is saved successfully");
+						//$('#purch_auto_email').val('');
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_purch_auto_email(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error");
+				else
+				{
+					$('#purch_auto_email').val(data[0].purch_auto_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	function save_renew_auto_email(){
+		//necessary fields
+		if($('#renew_auto_email').val()==""){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var renew_auto_email = $('#renew_auto_email').val().replace(/ /g, "+");
+			
+			var post_data = 'renew_auto_email='+renew_auto_email;
+			
+			$.ajax({
+				url: 'http://localhost:8081/save_renew_auto_email',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Receiving email is saved successfully");
+						//$('#renew_auto_email').val('');
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_renew_auto_email(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error");
+				else
+				{
+					$('#renew_auto_email').val(data[0].renew_auto_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	function save_deliv_auto_email(){
+		//necessary fields
+		if($('#deliv_auto_email').val()==""){
+			alert("Please enter all the necessary fields");
+		}
+		else{
+			var deliv_auto_email = $('#deliv_auto_email').val().replace(/ /g, "+");
+			
+			var post_data = 'deliv_auto_email='+deliv_auto_email;
+			
+			$.ajax({
+				url: 'http://localhost:8081/save_deliv_auto_email',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: post_data,
+				success: function( data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error");
+					else if(data==1)
+					{
+						alert("Receiving email is saved successfully");
+						//$('#deliv_auto_email').val('');
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}	
+	}
+	
+	function check_deliv_auto_email(){
+		$.ajax({
+			url: 'http://localhost:8081/check_variables',
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			type: 'post',
+			dataType : "json",
+			data: "",
+			success: function(data, textStatus, jQxhr ){
+				if(data==-2)	alert("Error");
+				else
+				{
+					$('#deliv_auto_email').val(data[0].deliv_auto_email);
+				}
+			},
+			error: function( data, textStatus){
+				alert("Error");
+			},
+			async:false
+		});
+	}
+	
+	//-------------------------------------------------------------------------------------------
+	
+	$('#rprt_typ').change(function() {
+		switch($(this).val()){
+			case '1':{
+				$("#rprt_type_cntnt").empty();
+				$("#rprt_table").empty();
+				lic_sw();
+			}
+			break;
+			case '2':{
+				$("#rprt_type_cntnt").empty();
+				$("#rprt_table").empty();
+				sw_expiry();
+			}
+			break;
+			case '3':{
+				$("#rprt_type_cntnt").empty();
+				$("#rprt_table").empty();
+				sw_orders();
+			}
+			break;
+			case '4':{
+				$("#rprt_type_cntnt").empty();
+				$("#rprt_table").empty();
+				exp_sw_budget();
+			}
+			break;
+			case '5':{
+				$("#rprt_type_cntnt").empty();
+				$("#rprt_table").empty();
+				fac_dir();
+			}
+			break;
+		}
+	});
+	
+	function lic_sw(){
+		var st_date = $('<input class="input_box" id="st_date" placeholder="Click here" style="width:340px;" value="1/1/2014"/>');
+		$(st_date).datepicker();
+		var end_date = $('<input style="position: relative; top: -55px; left: 360px;width:340px;" class="input_box" id="end_date" placeholder="Click here" value="1/1/2017"/>');
+		$(end_date).datepicker();
+		$("#rprt_type_cntnt").append('<a>Start date:</a><br>');
+		$("#rprt_type_cntnt").append(st_date);
+		$("#rprt_type_cntnt").append('<a id="arrow">-</a>');
+		$("#rprt_type_cntnt").append('<br><a style="position: relative; top: -54px; left: 360px;">End date:</a><br>');
+		$("#rprt_type_cntnt").append(end_date);
+		$("#rprt_type_cntnt").append('<input type="checkbox" class=""         id="1_ch_sw_nam" style="position: relative; top: 4px; left: -340px;" checked/><a style="position: relative; top: 0px; left: -340px;">Software name</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_ver"/><a style="position: relative; top: -5px;">Version</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_prod"/><a style="position: relative; top: -5px;">Products/Details</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_lic_typ"/><a style="position: relative; top: -5px;">License type</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_ser"/><a style="position: relative; top: -5px;">License server/port</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_no_lic"/><a style="position: relative; top: -5px;">Number of licenses</a><br>');
+		
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_fac" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Faculty/Staff</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_sw_ven" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Vendor</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_r_no" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Request number</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_p_no" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Purchase number</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_am" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Amount</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_ord_dat" style="position: relative; top: -150px; left: 230px;"/><a style="position: relative; top: -155px; ;left: 230px;">Order date</a><br>');
+		
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_dlv_sts" style="position: relative; top: -300px; left: 460px;"/><a style="position: relative; top: -305px; left: 460px;">Delivery status</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_dlv_dat" style="position: relative; top: -300px; left: 460px;"/><a style="position: relative; top: -305px; left: 460px;">Delivery date</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_st_dat" style="position: relative; top: -300px; left: 460px;"/><a style="position: relative; top: -305px; left: 460px;">License start date</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_exp_dat" style="position: relative; top: -300px; left: 460px;"/><a style="position: relative; top: -305px; left: 460px;">License expiry date</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="1_ch_box" id="1_ch_op_com" style="position: relative; top: -300px; left: 460px;"/><a style="position: relative; top: -305px; left: 460px;">Operation comments</a><br><br>');
+		$("#rprt_type_cntnt").append('<button class="sub_button" id="pdf_butn" onclick="createPDF();" style="position:relative;left:-20px; top:-270px;">Download in PDF</button><div class="content" id="" style="position:relative;left:-310px; top:-270px;"><div class="help-tip"><p>Please consider the limitation of an A4 paper in PDF, i.e you may not be able to include more than 4 fields.</p></div></div>');
+	}
+	
+	$(document).on('click', '#1_ch_sw_nam', function() {
+		return false;
+	});
+	
+	$(document).on('click', '.1_ch_box', function() {	    
+		if($(this)) {
+			if(($('#st_date').val()=="")||($('#end_date').val()=="")){
+				alert("Please insert start and end dates");
+				return false;
+			}
+			else{
+				var st_date = $('#st_date').val().replace(/ /g, "+");
+				var end_date = $('#end_date').val().replace(/ /g, "+");
+				
+				var post_data = 'st_date='+st_date+'&end_date='+end_date;
+			
+				$.ajax({
+					url: 'http://localhost:8081/lic_sw',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error!");
+						else
+						{	
+							$("#rprt_table").css({"top": "-365px"}); TABLE_SHIFT = 1 ;
+							$('#rprt_table').empty(); 
+							$('#rprt_table').append('<thead><tr>'); 
+							
+							if(document.getElementById("1_ch_sw_nam").checked) $('#rprt_table').append('<th>Software name</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_ver").checked) $('#rprt_table').append('<th>Version</th>'); 				else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_prod").checked) $('#rprt_table').append('<th>Products/Details</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_lic_typ").checked)  $('#rprt_table').append('<th>Lic. type</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_ser").checked)  $('#rprt_table').append('<th>Server@port#</th>'); 	else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_no_lic").checked)  $('#rprt_table').append('<th># of licenses</th>'); 	else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_fac").checked)  $('#rprt_table').append('<th>Fac/Staff</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_sw_ven").checked)  $('#rprt_table').append('<th>Vendor</th>'); 				else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_r_no").checked)  $('#rprt_table').append('<th>R#</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_p_no").checked)  $('#rprt_table').append('<th>P#</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_am").checked)  $('#rprt_table').append('<th>Amount (in AED)</th>'); 					else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_ord_dat").checked)  $('#rprt_table').append('<th>Order date</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_dlv_sts").checked)  $('#rprt_table').append('<th>Delivery status</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_dlv_dat").checked)  $('#rprt_table').append('<th>Delivery date</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_st_dat").checked)  $('#rprt_table').append('<th>Start date</th>'); 	else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_exp_dat").checked)  $('#rprt_table').append('<th>Expiry date</th>'); 	else $('#rprt_table').append('');
+							if(document.getElementById("1_ch_op_com").checked)  $('#rprt_table').append('<th>Operation comments</th>'); 	else $('#rprt_table').append('');
+							
+							$('#rprt_table').append('</tr></thead><tbody>'); 
+							
+							//console.log(data);
+							var Data = JSON.parse(data);
+							for(var i=0;i<Data.length;i++) //index of object (0->1) or (0->7)
+							{
+								$('#rprt_table').append('<tr>');
+								for(var j in Data[i]) //j is field name
+								{
+									if(j=="name")
+										if(document.getElementById("1_ch_sw_nam").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="version")
+										if(document.getElementById("1_ch_sw_ver").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="products")
+										if(document.getElementById("1_ch_sw_prod").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="lic_type")
+										if(document.getElementById("1_ch_lic_typ").checked){
+											switch(Data[i][j]){
+												case 'NET-LIC':
+													$('#rprt_table').append('<td>Network license</td>');
+												break;
+												case 'SER-LIC':
+													$('#rprt_table').append('<td>Server license</td>');
+												break;
+												case 'SIN-LIC':
+													$('#rprt_table').append('<td>Single license</td>');
+												break;
+												default:
+													$('#rprt_table').append('<td></td>');
+												break;
+											}
+										}
+									
+									if(j=="lic_server_port")
+										if(document.getElementById("1_ch_sw_ser").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="num_lic")
+										if(document.getElementById("1_ch_sw_no_lic").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="fac_id")
+										if(document.getElementById("1_ch_sw_fac").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="vend_id")
+										if(document.getElementById("1_ch_sw_ven").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="R_num")
+										if(document.getElementById("1_ch_r_no").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="P_num")
+										if(document.getElementById("1_ch_p_no").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="amount")
+										if(document.getElementById("1_ch_am").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="order_date")
+										if(document.getElementById("1_ch_ord_dat").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+									
+									if(j=="received")
+										if(document.getElementById("1_ch_dlv_sts").checked){
+											if(Data[i][j]=='1')
+												$('#rprt_table').append('<td>Delivered</td>');
+											else
+												$('#rprt_table').append('<td>Not delivered</td>');	
+										}
+									
+									if(j=="rec_date")
+										if(document.getElementById("1_ch_dlv_dat").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+									
+									if(j=="lic_str_date")
+										if(document.getElementById("1_ch_st_dat").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+									
+									if(j=="lic_exp_date")
+										if(document.getElementById("1_ch_exp_dat").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+									
+									if(j=="op_comments")
+										if(document.getElementById("1_ch_op_com").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+								}
+								$('#rprt_table').append('</tr>');
+							}
+							$('#rprt_table').append('</tbody>'); 
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	});
+	
+	function sw_expiry(){
+		var st_date = $('<input class="input_box" id="st_date" placeholder="Click here" style="width:340px;"/>');
+		$(st_date).datepicker();
+		var end_date = $('<input style="position: relative; top: -55px; left: 360px;width:340px;" class="input_box" id="end_date" placeholder="Click here"/>');
+		$(end_date).datepicker();
+		$("#rprt_type_cntnt").append('<a>Start date:</a><br>');
+		$("#rprt_type_cntnt").append(st_date);
+		$("#rprt_type_cntnt").append('<a id="arrow">-</a>');
+		$("#rprt_type_cntnt").append('<br><a style="position: relative; top: -54px; left: 360px;">End date:</a><br>');
+		$("#rprt_type_cntnt").append(end_date);
+		
+		$("#rprt_type_cntnt").append('<input type="checkbox" class=""         id="2_ch_sw_nam" style="position: relative; top: 4px; left: -340px;" checked/><a style="position: relative; top: 0px; left: -340px;">Software Name</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="2_ch_box" id="2_ch_sw_ver"/><a style="position: relative; top: -5px;">Software version</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="2_ch_box" id="2_ch_sw_ven"/><a style="position: relative; top: -5px;">Vendor</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="2_ch_box" id="2_str_date"/><a style="position: relative; top: -5px;">License start date</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="2_ch_box" id="2_exp_date"/><a style="position: relative; top: -5px;">License expiry date</a><br><br>');
+		$("#rprt_type_cntnt").append('<button class="sub_button" id="pdf_butn" onclick="createPDF();" style="position:relative;left:-20px;">Download in PDF</button><div class="content" id="" style="position:relative;left:-310px; top:0px;"><div class="help-tip"><p>Please consider the limitation of an A4 paper in PDF, i.e you may not be able to include more than 4 fields.</p></div></div>');
+	}
+	
+	$(document).on('click', '#2_ch_sw_nam', function() {
+		return false;
+	});
+	
+	$(document).on('click', '.2_ch_box', function() {	    
+		if($(this)) {
+			if(($('#st_date').val()=="")||($('#end_date').val()=="")){
+				alert("Please insert start and end dates");
+				return false;
+			}
+			else{
+				var st_date = $('#st_date').val().replace(/ /g, "+");
+				var end_date = $('#end_date').val().replace(/ /g, "+");
+				
+				var post_data = 'st_date='+st_date+'&end_date='+end_date;
+			
+				$.ajax({
+					url: 'http://localhost:8081/sw_expiry',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error!");
+						else
+						{	
+							if(TABLE_SHIFT) $("#rprt_table").css({"top": "-100px"});
+							$('#rprt_table').empty();
+							$('#rprt_table').append('<tr>'); 
+							
+							if(document.getElementById("2_ch_sw_nam").checked) $('#rprt_table').append('<th>Software name</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("2_ch_sw_ver").checked) $('#rprt_table').append('<th>Version</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("2_ch_sw_ven").checked) $('#rprt_table').append('<th>Vendor</th>'); 				else $('#rprt_table').append('');
+							if(document.getElementById("2_str_date").checked)  $('#rprt_table').append('<th>Start date</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("2_exp_date").checked)  $('#rprt_table').append('<th>Expiry date</th>'); 		else $('#rprt_table').append('');
+							
+							$('#rprt_table').append('</tr>'); 
+							
+							var Data = JSON.parse(data);
+							
+							for(var i=0;i<Data.length;i++) //index of object (0->1) or (0->7)
+							{
+								$('#rprt_table').append('<tr>');
+								for(var j in Data[i]) //j is field name
+								{
+									if(j=="name")
+										if(document.getElementById("2_ch_sw_nam").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="version")
+										if(document.getElementById("2_ch_sw_ver").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="vend_id")
+										if(document.getElementById("2_ch_sw_ven").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="lic_str_date")
+										if(document.getElementById("2_str_date").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+											
+									if(j=="lic_exp_date")
+										if(document.getElementById("2_exp_date").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+								}
+								$('#rprt_table').append('</tr>');
+							}	
+							$('#rprt_table').append('<br><br><br>');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	});
+	
+	function sw_orders(){
+		var st_date = $('<input class="input_box" id="st_date" placeholder="Click here" style="width:340px;"/>');
+		$(st_date).datepicker();
+		var end_date = $('<input style="position: relative; top: -55px; left: 360px;width:340px;" class="input_box" id="end_date" placeholder="Click here"/>');
+		$(end_date).datepicker();
+		$("#rprt_type_cntnt").append('<a>Start date:</a><br>');
+		$("#rprt_type_cntnt").append(st_date);
+		$("#rprt_type_cntnt").append('<a id="arrow">-</a>');
+		$("#rprt_type_cntnt").append('<br><a style="position: relative; top: -54px; left: 360px;">End date:</a><br>');
+		$("#rprt_type_cntnt").append(end_date);
+		
+		$("#rprt_type_cntnt").append('<input type="checkbox" class=""         id="3_ch_sw_nam" style="position: relative; top: 4px; left: -340px;" checked/><a style="position: relative; top: 0px; left: -340px;">Software Name</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="3_ch_box" id="3_ch_sw_ver"/><a style="position: relative; top: -5px;">Software version</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="3_ch_box" id="3_ch_sw_ven"/><a style="position: relative; top: -5px;">Vendor</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="3_ch_box" id="3_ch_ord_date"/><a style="position: relative; top: -5px;">Order date</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="3_ch_box" id="3_ch_dlv_sts"/><a style="position: relative; top: -5px;">Delivery status</a><br><br>');
+		$("#rprt_type_cntnt").append('<button class="sub_button" id="pdf_butn" onclick="createPDF();" style="position:relative;left:-20px;">Download in PDF</button><div class="content" id="" style="position:relative;left:-310px; top:0px;"><div class="help-tip"><p>Please consider the limitation of an A4 paper in PDF, i.e you may not be able to include more than 4 fields.</p></div></div>');
+	}
+	
+	$(document).on('click', '#3_ch_sw_nam', function() {
+		return false;
+	});
+	
+	$(document).on('click', '.3_ch_box', function() {
+		if($(this)) {
+			if(($('#st_date').val()=="")||($('#end_date').val()=="")){
+				alert("Please insert start and end dates");
+				return false;
+			}
+			else{
+				var st_date = $('#st_date').val().replace(/ /g, "+");
+				var end_date = $('#end_date').val().replace(/ /g, "+");
+				
+				var post_data = 'st_date='+st_date+'&end_date='+end_date;
+			
+				$.ajax({
+					url: 'http://localhost:8081/sw_orders',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: post_data,
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error!");
+						else
+						{	
+							if(TABLE_SHIFT) $("#rprt_table").css({"top": "-100px"});
+							$('#rprt_table').empty();
+							$('#rprt_table').append('<tr>'); 
+							
+							if(document.getElementById("3_ch_sw_nam").checked) $('#rprt_table').append('<th>Software name</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("3_ch_sw_ver").checked) $('#rprt_table').append('<th>Version</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("3_ch_sw_ven").checked) $('#rprt_table').append('<th>Vendor</th>'); 				else $('#rprt_table').append('');
+							if(document.getElementById("3_ch_ord_date").checked)  $('#rprt_table').append('<th>Order date</th>'); 		else $('#rprt_table').append('');
+							if(document.getElementById("3_ch_dlv_sts").checked)  $('#rprt_table').append('<th>Delivery status</th>'); 	else $('#rprt_table').append('');
+							
+							$('#rprt_table').append('</tr>'); 
+							
+							var Data = JSON.parse(data);
+							
+							for(var i=0;i<Data.length;i++) //index of object (0->1) or (0->7)
+							{
+								$('#rprt_table').append('<tr>');
+								for(var j in Data[i]) //j is field name
+								{
+									if(j=="name")
+										if(document.getElementById("3_ch_sw_nam").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="version")
+										if(document.getElementById("3_ch_sw_ver").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="vend_id")
+										if(document.getElementById("3_ch_sw_ven").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+											
+									if(j=="order_date")
+										if(document.getElementById("3_ch_ord_date").checked){
+											if(Data[i][j]=='0')
+												$('#rprt_table').append('<td>Undefined</td>');
+											else
+												$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										}
+											
+									if(j=="received")
+										if(document.getElementById("3_ch_dlv_sts").checked){
+											if(Data[i][j]=='1')
+												$('#rprt_table').append('<td>Delivered</td>');
+											else
+												$('#rprt_table').append('<td>Not delivered</td>');	
+										}
+								}
+								$('#rprt_table').append('</tr>');
+							}
+							$('#rprt_table').append('<br><br><br>');
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			}
+		}
+	});
+	
+	function exp_sw_budget(){
+		/*var st_date = $('<input class="input_box" id="st_date" placeholder="Click here" style="width:340px;"/>');
+		$(st_date).datepicker();
+		var end_date = $('<input style="position: relative; top: -55px; left: 360px;width:340px;" class="input_box" id="end_date" placeholder="Click here"/>');
+		$(end_date).datepicker();
+		$("#rprt_type_cntnt").append('<a>Start date:</a><br>');
+		$("#rprt_type_cntnt").append(st_date);
+		$("#rprt_type_cntnt").append('<a id="arrow">-</a>');
+		$("#rprt_type_cntnt").append('<br><a style="position: relative; top: -54px; left: 360px;">End date:</a><br>');
+		$("#rprt_type_cntnt").append(end_date);*/
+		$("#rprt_type_cntnt").append('<input type="checkbox" class=""         id="4_ch_sw_nam" style="position: relative; top: 0px; left: 0px;" checked/><a style="position: relative; top: -5px; left: 0px;">Software Name</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="4_ch_box" id="4_ch_sw_ver"/><a style="position: relative; top: -5px;">Software version</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="4_ch_box" id="4_ch_sw_ven"/><a style="position: relative; top: -5px;">Vendor</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="4_ch_box" id="4_ch_amount"/><a style="position: relative; top: -5px;">Amount</a><br><br>');
+		$("#rprt_type_cntnt").append('<button class="sub_button" id="pdf_butn" onclick="createPDF();" style="position:relative;left:-20px;">Download in PDF</button><div class="content" id="" style="position:relative;left:-310px; top:0px;"><div class="help-tip"><p>Please consider the limitation of an A4 paper in PDF, i.e you may not be able to include more than 4 fields.</p></div></div>');
+	}
+	
+	$(document).on('click', '#4_ch_sw_nam', function() {
+		return false;
+	});
+	
+	$(document).on('click', '.4_ch_box', function() {	    
+		if($(this)) {
+			/*if(($('#st_date').val()=="")||($('#end_date').val()=="")){
+				alert("Please insert start and end dates");
+				return false;
+			}
+			else{
+				var st_date = $('#st_date').val().replace(/ /g, "+");
+				var end_date = $('#end_date').val().replace(/ /g, "+");
+				
+				var post_data = 'st_date='+st_date+'&end_date='+end_date;*/
+			
+				$.ajax({
+					url: 'http://localhost:8081/exp_sw_budget',
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					type: 'post',
+					dataType : "text",
+					data: "",
+					success: function(data, textStatus, jQxhr ){
+						if(data==-2)	alert("Error!");
+						else
+						{	
+							if(TABLE_SHIFT) $("#rprt_table").css({"top": "-100px"});
+							$('#rprt_table').empty();
+							$('#rprt_table').append('<tr>'); 
+							
+							if(document.getElementById("4_ch_sw_nam").checked) $('#rprt_table').append('<th>Software name</th>'); 			else $('#rprt_table').append('');
+							if(document.getElementById("4_ch_sw_ver").checked) $('#rprt_table').append('<th>Version</th>'); 				else $('#rprt_table').append('');
+							if(document.getElementById("4_ch_sw_ven").checked) $('#rprt_table').append('<th>Vendor</th>'); 					else $('#rprt_table').append('');
+							if(document.getElementById("4_ch_amount").checked) $('#rprt_table').append('<th>Amount (in AED)</th>'); 					else $('#rprt_table').append('');
+							
+							$('#rprt_table').append('</tr>'); 
+							
+							console.log(data);
+							var Data = JSON.parse(data);
+							for(var i=0;i<Data.length;i++) //index of object (0->1) or (0->7)
+							{
+								$('#rprt_table').append('<tr>');
+								for(var j in Data[i]) //j is field name
+								{
+									if(j=="name")
+										if(document.getElementById("4_ch_sw_nam").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="version")
+										if(document.getElementById("4_ch_sw_ver").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="vend_id")
+										if(document.getElementById("4_ch_sw_ven").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+									
+									if(j=="amount")
+										if(document.getElementById("4_ch_amount").checked)
+											$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+								}
+								$('#rprt_table').append('</tr>');
+							}
+						}
+					},
+					error: function( data, textStatus){
+						alert("Error");
+					},
+					async:false
+				});
+			//}
+		}
+	});
+	
+	function fac_dir(){
+		$("#rprt_type_cntnt").append('<input type="checkbox" class=""         id="5_ch_fac_nam" checked/><a style="position: relative; top: -5px;">Name</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="5_ch_box" id="5_ch_pos"/><a style="position: relative; top: -5px;">Position</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="5_ch_box" id="5_ch_off"/><a style="position: relative; top: -5px;">Office</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="5_ch_box" id="5_ch_email"/><a style="position: relative; top: -5px;">Email</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="5_ch_box" id="5_ch_phone"/><a style="position: relative; top: -5px;">Phone</a><br>');
+		$("#rprt_type_cntnt").append('<input type="checkbox" class="5_ch_box" id="5_ch_mob"/><a style="position: relative; top: -5px;">Mobile</a><br><br>');
+		$("#rprt_type_cntnt").append('<button class="sub_button" id="pdf_butn" onclick="createPDF();" style="position:relative;left:-20px;">Download in PDF</button><div class="content" id="" style="position:relative;left:-310px; top:0px;"><div class="help-tip"><p>Please consider the limitation of an A4 paper in PDF, i.e you may not be able to include more than 4 fields.</p></div></div>');
+	}
+	
+	$(document).on('click', '#5_ch_fac_nam', function() {
+		return false;
+	});
+	
+	$(document).on('click', '.5_ch_box', function() {
+		if($(this)) {
+			$.ajax({
+				url: 'http://localhost:8081/fac_dir',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				type: 'post',
+				dataType : "text",
+				data: "",
+				success: function(data, textStatus, jQxhr ){
+					if(data==-2)	alert("Error!");
+					else
+					{	
+						if(TABLE_SHIFT) $("#rprt_table").css({"top": "-100px"});
+						$('#rprt_table').empty();
+						$('#rprt_table').append('<tr>'); 
+						
+						if(document.getElementById("5_ch_fac_nam").checked) $('#rprt_table').append('<th>Name</th>'); 		else $('#rprt_table').append('');
+						if(document.getElementById("5_ch_pos").checked) 	$('#rprt_table').append('<th>Position</th>'); 	else $('#rprt_table').append('');
+						if(document.getElementById("5_ch_email").checked) 	$('#rprt_table').append('<th>Email Adress</th>'); 	    else $('#rprt_table').append('');
+						if(document.getElementById("5_ch_phone").checked)  	$('#rprt_table').append('<th>Phone</th>'); 		else $('#rprt_table').append('');
+						if(document.getElementById("5_ch_mob").checked)  	$('#rprt_table').append('<th>Mobile</th>'); 	else $('#rprt_table').append('');
+						if(document.getElementById("5_ch_off").checked)  	$('#rprt_table').append('<th>Office</th>'); 	else $('#rprt_table').append('');
+						
+						$('#rprt_table').append('</tr>'); 
+						
+						var Data = JSON.parse(data);
+						//var tb_data = [];
+						
+						for(var i=0;i<Data.length;i++) //index of object (0->1) or (0->7)
+						{
+							$('#rprt_table').append('<tr>');
+							for(var j in Data[i]) //j is field name
+							{
+								if(j=="name")
+									if(document.getElementById("5_ch_fac_nam").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										
+								if(j=="position")
+									if(document.getElementById("5_ch_pos").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										
+								if(j=="email")
+									if(document.getElementById("5_ch_email").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										
+								if(j=="phone")
+									if(document.getElementById("5_ch_phone").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										
+								if(j=="mobile")
+									if(document.getElementById("5_ch_mob").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+										
+								if(j=="office")
+									if(document.getElementById("5_ch_off").checked)
+										$('#rprt_table').append('<td>'+Data[i][j]+'</td>');
+							}
+							$('#rprt_table').append('</tr>');
+						}
+						/*var columns = [];
+						var data = [
+							[1, "Denmark", 7.526, "Copenhagen"],
+							[2, "Switzerland", 	7.509, "Bern"],
+							[3, "Iceland", 7.501, "Reykjavík"],
+							[4, "Norway", 7.498, "Oslo"],
+							[5, "Finland", 7.413, "Helsinki"]
+						];
+						data = $('#rprt_table')[0];
+						console.log(data);
+						var doc = new jsPDF('p', 'pt');
+						doc.autoTable(columns, data);
+						doc.save("table.pdf");*/
+					}
+				},
+				error: function( data, textStatus){
+					alert("Error");
+				},
+				async:false
+			});
+		}
+	});
+	 
+	//-------------------------------------------------------------------------------------------
+	
+	function createPDF() {
+
+		//var pdf = new jsPDF('p','pt','a4');
+		//var pdf = new jsPDF('p', 'mm', [297, 210]);
+		/*var pdf = new jsPDF('p', 'mm', [297, 210]);
+		
+		margins = {
+			top: 20,
+			bottom: 60,
+			left: 20,
+			width: 522
+		};
+
+		pdf.addHTML(
+			document.getElementById("rprt_table"),
+			margins.left, // x coord
+			margins.top, // y coord
+			function() {
+				pdf.background = "#FFFFFF"; 
+				pdf.save('web.pdf');
+			}
+		);*/
+		
+		html2canvas(document.getElementById("rprt_table"),{
+			onrendered: function (canvas){
+				var img = canvas.toDataURL("image/png");
+				var doc = new jsPDF();
+				doc.addImage(img, 'JPEG', 20, 20);
+				doc.save('Report.pdf');
+			
+			}
+		});
+
+	}
+
+	//-------------------------------------------------------------------------------------------
+	
+	function call_php_fn() {
+		$.ajax({
+			url: 'http://localhost:1234/php/send_email.php',
+			type: 'GET',
+			dataType: "text",
+			success: function(data){
+				alert(data);
+			},
+			error: function(){
+				alert("Error");
+			}
+		});
+	}
+
+</script>
+
+<style>
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-y: scroll;
+  width: 100%; 
+  height: 98%;
+  margin: 0px 20px 0px 20px; 
+}
+
+body {
+	background-color: #ffffff;
+	width: 100%; 
+	padding-bottom: 50px;
+	font-size: 20px;
+    text-align: left;
+}
+
+footer{
+  position: absolute;
+  text-align: center;
+	width: 120%; 
+  padding: 10px;
+  background-color: #1ab188;
+  font-size: 17px; 
+  color: white;
+  left: 7px;
+  margin: 0px 20px 0px 20px; 
+}
+
+.file-uploader {
+	position: absolute;
+	top: 150px;
+	left: -300px;
+}
+
+/*----   submit buttons   -------------------*/
+button{
+    background-color: #179b77; /* Green */
+	border-radius: 4px;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0px 10px 0px 20px;
+    cursor: pointer;
+	float: center;
+    display: inline-block;
+}
+button.sub_button:hover { 
+    background-color: #117157;
+}
+button.del_button {
+    background-color: #E34B4B; 
+}
+button.del_button:hover { 
+    background-color: #A83838;
+}
+/*-----------------------------------------*/
+
+/*----   Logo   ------*/
+img.logo {
+    float: center;
+    width: 140px;
+    height: auto;
+	margin-left: 310px;
+	margin-top: -10px;
+	margin-bottom: -5px;
+}
+img.aus {
+	margin-left:-10px;
+	padding-bottom:28px;
+    width: 320px;
+}
+/*-------------------*/
+
+/*---  Fly-out Menu  ----------------------------------------*/
+#cssmenu{ 
+	list-style: none; 
+	background-color: #EAFFFA;  /*234 255 250 the green background */
+	padding: 30px 0 0 30px;
+	width: 120%;
+	/*min-width: 3600px;*/
+  
+}
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul ul {
+  list-style: none; 
+  margin: 0; 
+  padding: 0;
+  border: 0;
+}
+#cssmenu ul {
+  position: relative;
+  z-index: 397; 
+}
+#cssmenu ul li {
+  min-height: 1px;
+  line-height: 1em;
+  vertical-align: middle;
+}
+#cssmenu ul li {
+  position: relative; 
+  z-index: 399;
+  cursor: default;
+}
+#cssmenu ul ul {
+  visibility: hidden; /* hide sub menus by default */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 398; 
+  width: 75%;
+  top: 0px;
+  left: 99%;
+}
+#cssmenu ul ul ul {
+  top: 0px; 
+  left: 99%;
+}
+#cssmenu ul li > ul {
+  visibility:hidden;
+  opacity:0;
+  transition:  0s linear 0.25s,opacity 0.25s linear;
+}
+#cssmenu ul li:hover > ul {
+  visibility: visible; /* show sub menu */
+  opacity:1;
+  transition-delay:0s;
+}
+/*------------------------------------------------------*/
+
+/*----   Fly-out menu styling   --------------------*/
+ul {
+    list-style-type: none;
+    margin-top: 40px;
+    padding:0 0 0 0;
+    width: 260px;
+    background-color: #1ab188;   /* green color */
+  
+}
+
+li a  {
+    display: block;
+    color: #ffffff;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+}
+li a {
+   transition:  0.25s;
+}
+li a.active {
+    background-color: #117157;
+	color: #ffffff; 
+	font-size: 21px;
+	font-weight: bold;
+}
+
+li a:hover  {
+    background-color: #117157;   /* dark green background color */
+    color: #ffffff;              /* black text color */
+	font-size: 21px;
+}
+
+/*-----------------------------------------------------*/
+
+/*----    tab group    --------------------------------*/
+.tab-group {
+  list-style:none;
+  padding:0;
+  margin:0px 0px 40px 0;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  li a {
+    display:block;
+    text-decoration:none;
+    padding:15px;
+    background:rgba($gray-light,.25);
+    color:$gray-light;
+    font-size:15px;
+    float:left;
+    width:50%;
+    text-align:center;
+    cursor:pointer;
+    transition:.5s ease;
+    &:hover {
+      background:$main-dark;
+      color:$white;
+    }
+  }
+  .active a {
+    background:$main;
+    color:$white;
+  }
+}
+
+.tab-content > div:last-child {
+  display:none;
+}
+
+h2 {
+  text-align:left;
+  color:$white;
+  font-weight:$thin;
+  margin: -186px 0px 0px 300px; /* top, right, bottom, left*/
+  padding: 0px 0 20px 0;
+}
+
+#page{
+	font-size: 18px;
+	left: 300px;
+	position:relative;
+}
+/*-----------------------------------------------*/
+
+/*-----  input box   ---------------------------------------------*/
+.input_box, .textarea_box {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 18px;
+  width: 450px;
+  padding: 5px 10px;
+  margin-left: 0px;
+  background: none;
+  background-image: none;
+  border: 1px solid #067511;
+  color: #000000;
+  border-radius: 0;
+  -webkit-transition: border-color .25s ease, box-shadow .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease;
+  background-color: white;
+}
+.input_box:focus, .textarea_box:focus {
+  outline: 1;
+  border-color: #ff0000;
+}
+
+.star{
+	display: block;
+	color: #ff0000;
+	font-size: 23px;
+	padding-left: 451px ;
+	margin-top: -27px ;
+}
+
+select{
+	width: 170px;
+	font-family: "Times New Roman", Times, serif;
+	font-size:16px;
+	color: #000000;
+	border: 1px solid #067511;
+	height: 30px;
+	display: block;
+}
+select.yes_no_options{
+	display: inline-block;
+	width: auto;
+}
+select[disabled]{
+  color: #a9a9a9;
+  border: 1px solid #a9a9a9;
+}
+a[disabled]{
+  color: #a9a9a9;
+}
+/*--------------------------------------------------*/
+input[type=checkbox]{
+    height: 20px;
+    width:  20px;
+}
+#is_fac{
+	margin-top: 6px;
+}
+#check_box_text{
+	display: block;
+	margin: -24px 0px 0 25px;
+}
+.mail_radio_button{
+	margin: 0px 0px 0px 0px;
+}
+.mail_ch_box_txt{
+	display: block;
+	margin: -25px 0px -20px 23px;
+}
+/*-----  help tip  ---------------------------------*/
+.content{
+	position: absolute;
+	margin: 0 auto 100px;
+}
+.help-tip{
+	position: absolute;
+	top: -29px;
+	right: 18px;
+	text-align: center;
+	background-color: #BCDBEA;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 26px;
+	cursor: default;
+	left: 463px;
+}
+.help-tip:before{
+	content:'?';
+	font-weight: bold;
+	color:#686868;
+}
+.help-tip:hover p{
+	display:block;
+	transform-origin: 100% 0%;
+	-webkit-animation: fadeIn 0.3s ease-in-out;
+	animation: fadeIn 0.3s ease-in-out;
+}
+.help-tip p{
+	display: none;
+	text-align: left;
+	background-color: #242728;
+	padding: 10px;
+	width: 200px;
+	position: absolute;
+	border-radius: 3px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	right: -4px;
+	color: #FFF;
+	font-size: 14px;
+	line-height: 1.4;
+	z-index: 1; 
+}
+.help-tip p:before{
+	position: absolute;
+	content: '';
+	width:0;
+	height: 0;
+	border:6px solid transparent;
+	border-bottom-color:#242728;
+	right:10px;
+	top:-12px;
+}
+.help-tip p:after{
+	width:100%;
+	height:40px;
+	content:'';
+	position: absolute;
+	top:-40px;
+	left:0;
+}
+@-webkit-keyframes fadeIn {
+	0% { 
+		opacity:0; 
+		transform: scale(0.6);
+	}
+
+	100% {
+		opacity:100%;
+		transform: scale(1);
+	}
+}
+@keyframes fadeIn {
+	0% { opacity:0; }
+	100% { opacity:100%; }
+}
+/*--------------------------------------------------*/
+label {
+	float: left;
+	clear: none;
+	display: block;
+	padding: 2px 1em 0 0;
+}
+.radio {
+	float: left;
+	clear: none;
+	margin: 4px 2px 0 2px;
+	height: 17px;
+	width: 17px;
+}
+/*--------------------------------------------------*/
+textarea{ 
+	max-width: 450px; 
+    max-height: 300px;
+}
+/*--------------------------------------------------*/
+#arrow{ 
+	padding: 0 5px 0 7px;
+}
+/*--------------------------------------------------*/
+#rprt_table{
+	position: relative;
+	width: 100%;
+	padding: 30px 30px 0 0px;
+	top: -100px;
+}
+#rprt_table th {
+	background-color: #1ab188; 
+    padding: 8px 25px 8px 25px ;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+	text-align: left;
+	font-size: 17px;
+	color: white;
+	min-width: 150px;
+}
+#rprt_table td {
+    padding: 8px 25px 8px 25px ;
+    border-bottom: 1px solid #969393;
+	text-align: left;
+	font-size: 18px;
+	background-color: #F7FFFD;
+	min-width: 150px;
+}
+/*--------------------------------------------------*/
+hr {
+	position: relative;
+	float: left;
+}
+
+</style>
+
